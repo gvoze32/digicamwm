@@ -1,19 +1,39 @@
 {
-  "dependencies": {
-    "exif-parser": "^0.1.12",
-    "sharp": "^0.33.5"
-  },
   "name": "digicamwm",
   "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {},
+  "description": "Digital Camera Watermarking Tool",
+  "main": "main.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "npm start",
-    "postinstall": "node -e \"const fs=require('fs'); !fs.existsSync('raw') && fs.mkdirSync('raw', {recursive: true}) && console.log('Folder raw created successfully!');\""
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder"
   },
-  "author": "gvoze32",
+  "author": "",
   "license": "ISC",
-  "description": "",
-  "homepage": "https://github.com/gvoze32/digicamwm"
+  "dependencies": {
+    "exif-parser": "^0.1.12",
+    "sharp": "^0.32.0"
+  },
+  "devDependencies": {
+    "electron": "^24.8.8",
+    "electron-builder": "^23.6.0"
+  },
+  "build": {
+    "appId": "com.digicamwm.app",
+    "productName": "DigiCamWM",
+    "mac": {
+      "category": "public.app-category.photography"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "files": [
+      "**/*",
+      "!raw/**",
+      "!processed/**"
+    ]
+  }
 }
