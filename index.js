@@ -153,16 +153,12 @@ async function createPremiumWatermark(
         frameHeight * 2
       }" fill="url(#grad)"/>
         
-        <!-- Camera model at top -->
         <text x="${centerX}" y="${cameraY}" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#111111" text-anchor="middle" dominant-baseline="middle">${cameraInfo}</text>
         
-        <!-- Brand logo in middle -->
         ${logoElement}
         
-        <!-- Exposure info below logo -->
         <text x="${centerX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${exposureInfo}</text>
         
-        <!-- Date/time at bottom -->
         <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${dateTimeString}</text>
       </svg>`;
 
@@ -234,17 +230,14 @@ async function createPremiumWatermark(
         </defs>
         <rect width="${imageWidth}" height="${frameHeight}" fill="url(#grad)"/>
         
-        <!-- Camera model with text adjustment -->
         <text x="${leftTextX}" y="${
         centerY + textAdjustment
       }" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#111111" dominant-baseline="central" letter-spacing="0.5">${cameraInfo}</text>
         
         ${logoElement}
         
-        <!-- Vertical divider with logo adjustment -->
         <line x1="${dividerX}" y1="${adjustedDividerTop}" x2="${dividerX}" y2="${adjustedDividerBottom}" stroke="#CCCCCC" stroke-width="2"/>
         
-        <!-- Exposure info and date with text adjustment -->
         ${
           exposureInfo
             ? `<text x="${rightTextX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#333333" text-anchor="end" dominant-baseline="central">${exposureInfo}</text>`

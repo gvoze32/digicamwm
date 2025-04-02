@@ -4,3 +4,4 @@ processed/
 package-lock.json
 .vscode
 /.DS_Store
+/assets/.DS_Store
