@@ -9,7 +9,8 @@
   "devDependencies": {},
   "scripts": {
     "start": "node index.js",
-    "test": "npm start"
+    "test": "npm start",
+    "postinstall": "node -e \"const fs=require('fs'); !fs.existsSync('raw') && fs.mkdirSync('raw', {recursive: true}) && console.log('Folder raw created successfully!');\""
   },
   "author": "gvoze32",
   "license": "ISC",
