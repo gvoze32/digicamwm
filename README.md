@@ -102,4 +102,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the ISC License - see the LICENSE file for details.
+This project is licensed under the ISC License - see the [LICENSE](https://github.com/gvoze32/digicamwm/blob/main/LICENSE) file for details.
