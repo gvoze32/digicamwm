@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "exif-parser": "^0.1.12",
+    "sharp": "^0.33.5"
+  },
+  "name": "digicamwm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "npm start"
+  },
+  "author": "gvoze32",
+  "license": "ISC",
+  "description": "",
+  "homepage": "https://github.com/gvoze32/digicamwm"
+}

@@ -1,0 +1,6 @@
+node_modules/
+raw/
+processed/
+package-lock.json
+.vscode
+/.DS_Store
