@@ -1,70 +1,105 @@
-# digicamwm
+# DigiCamWM
 
-digicamwm is a Node.js-based tool for adding elegant watermarks to images. It extracts EXIF metadata from images to create customized watermarks that include camera details, exposure settings, and brand logos.
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/gvoze32/digicamwm)
+![License](https://img.shields.io/github/license/gvoze32/digicamwm)
+
+A powerful digital camera watermarking tool that adds professional-looking frames with camera information to your photos.
+
+![Screenshot of DigiCamWM](assets/screenshot.jpeg)
 
 ## Features
 
-- Automatically extracts EXIF metadata (camera make, model, focal length, aperture, ISO, etc.).
-- Supports both portrait and landscape image orientations.
-- Dynamically embeds brand logos based on the camera make.
-- Generates watermarks with a clean and professional design.
-- Bulk processes images from a folder.
-
-## Requirements
-
-- Node.js (v14 or higher)
-- `sharp` library for image processing
-- `exif-parser` library for extracting EXIF metadata
+- 📷 Extracts EXIF data from photos (camera model, settings, date/time)
+- 🖼️ Adds professional watermark frames with camera info
+- 🏞️ Supports both portrait and landscape orientations
+- 🚀 Batch processing capabilities
+- 🎨 Clean, minimal UI that's easy to use
+- 💻 Cross-platform (Windows, macOS, Linux)
 
 ## Installation
 
-1. Clone the repository:
+### Download
 
-   ```bash
-   git clone https://github.com/gvoze32/digicamwm.git
-   cd digicamwm
-   ```
+Download the latest version from the [Releases page](https://github.com/gvoze32/digicamwm/releases).
 
-2. Install dependencies:
+### Supported Platforms
 
-   ```bash
-   npm install
-   npm postinstall
-   ```
+- **Windows**: Download the `.exe` installer
+- **macOS**: Download the `.dmg` file
+- **Linux**: Download the `.AppImage` file
 
 ## Usage
 
-### Command-Line Interface
+### GUI Application
 
-1. Place your raw images in a folder (e.g., `raw`).
-2. Run the script to process the images:
+1. Launch the DigiCamWM application
+2. Select your input folder containing photos
+3. Choose an output folder for processed images
+4. Click "Start Processing"
+5. View the results in your output folder
 
-   ```bash
-   npm start
-   ```
+### Command Line Interface
 
-3. The processed images with watermarks will be saved in the specified `processed` folder.
+DigiCamWM also offers a command line interface:
 
-## Supported Camera Brands
+```bash
+# Basic usage
+node index.js --raw /path/to/input --processed /path/to/output
+```
 
-Ensure the `assets` folder contains SVG logos for the following brands:
+## Development
 
-- Canon
-- Apple
-- Sony
-- Nikon
-- Fujifilm
-- Panasonic
-- Leica
-- Olympus
-- Kodak
+### Prerequisites
 
-If a logo is missing, the camera make will be displayed as text instead. Help contribute by uploading missing logos to [https://tally.so/r/wMVyoX](https://tally.so/r/wMVyoX).
+- [Node.js](https://nodejs.org/) (v14 or newer)
+- [npm](https://www.npmjs.com/) (v6 or newer)
 
-## License
+### Setup
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```bash
+# Clone the repository
+git clone https://github.com/gvoze32/digicamwm.git
+cd digicamwm
+
+# Install dependencies
+npm install
+```
+
+### Running in Development Mode
+
+```bash
+npm run dev
+```
+
+### Building from Source
+
+```bash
+# Build for your current platform
+npm run build
+
+# The packaged application will be in the 'dist' folder
+```
+
+## Camera Brand Logo Support
+
+DigiCamWM will automatically look for camera brand logos in the `assets` folder. The file should be named according to the camera manufacturer (lowercase) with a `.png` extension.
+
+For example:
+
+- `assets/sony.png`
+- `assets/canon.png`
+- `assets/nikon.png`
+
+## Technologies
+
+- [Electron](https://www.electronjs.org/) - Cross-platform desktop app framework
+- [Sharp](https://sharp.pixelplumbing.com/) - High-performance image processing
+- [exif-parser](https://www.npmjs.com/package/exif-parser) - EXIF metadata extraction
 
 ## Contributing
 
-Contributions are welcome! Feel free to submit issues or pull requests to improve the project.
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the ISC License - see the LICENSE file for details.

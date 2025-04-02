@@ -6,9 +6,14 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "release": "electron-builder --publish always"
   },
-  "author": "",
+  "author": "gvoze32",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gvoze32/digicamwm.git"
+  },
   "license": "ISC",
   "dependencies": {
     "exif-parser": "^0.1.12",
@@ -22,18 +27,29 @@
     "appId": "com.digicamwm.app",
     "productName": "DigiCamWM",
     "mac": {
-      "category": "public.app-category.photography"
+      "category": "public.app-category.photography",
+      "target": "dmg",
+      "icon": "assets/digicamwm.png"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/digicamwm.png"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "AppImage",
+      "icon": "assets/digicamwm.png"
     },
     "files": [
       "**/*",
       "!raw/**",
       "!processed/**"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "gvoze32",
+        "repo": "digicamwm"
+      }
     ]
   }
 }
