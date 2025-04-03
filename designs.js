@@ -29,14 +29,11 @@ const designs = {
       const exposureY = frameHeight * 1.4; // Moved down from 1.2 to 1.3
       const dateY = frameHeight * 1.8; // Moved down from 1.6 to 1.7
 
-      // Move photographer name lower and make it smaller
-      const photographerElement = photographerName
-        ? `<text x="${imageWidth - 20}" y="${
-            frameHeight * 1.85
-          }" font-family="Arial, sans-serif" font-size="${
-            smallFontSize * 0.75
-          }" font-weight="400" fill="#666666" text-anchor="end" dominant-baseline="middle">Taken by: ${photographerName}</text>`
-        : "";
+      // Combine datetime and photographer info with a divider
+      let dateTimeDisplay = dateTimeString;
+      if (photographerName) {
+        dateTimeDisplay += ` | Taken by ${photographerName}`;
+      }
 
       return `
       <svg width="${imageWidth}" height="${
@@ -54,8 +51,7 @@ const designs = {
         <text x="${centerX}" y="${cameraY}" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#111111" text-anchor="middle" dominant-baseline="middle">${cameraInfo}</text>
         ${logoElement}
         <text x="${centerX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${exposureInfo}</text>
-        <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${dateTimeString}</text>
-        ${photographerElement}
+        <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${dateTimeDisplay}</text>
       </svg>`;
     },
 
@@ -87,7 +83,7 @@ const designs = {
       const photographerElement = photographerName
         ? `<text x="${leftTextX}" y="${
             centerY + textAdjustment + fontSize * 0.9
-          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="500" fill="#333333" dominant-baseline="central">Taken by: ${photographerName}</text>`
+          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="500" fill="#333333" dominant-baseline="central">Taken by ${photographerName}</text>`
         : "";
 
       return `
@@ -146,14 +142,11 @@ const designs = {
       const exposureY = frameHeight * 1.4;
       const dateY = frameHeight * 1.8;
 
-      // Move photographer name lower and make it smaller
-      const photographerElement = photographerName
-        ? `<text x="${imageWidth - 20}" y="${
-            frameHeight * 1.85
-          }" font-family="Arial, sans-serif" font-size="${
-            smallFontSize * 0.75
-          }" font-weight="400" fill="#888888" text-anchor="end" dominant-baseline="middle">Taken by: ${photographerName}</text>`
-        : "";
+      // Combine datetime and photographer info with a divider
+      let dateTimeDisplay = dateTimeString;
+      if (photographerName) {
+        dateTimeDisplay += ` | Taken by ${photographerName}`;
+      }
 
       return `
       <svg width="${imageWidth}" height="${
@@ -171,8 +164,7 @@ const designs = {
         <text x="${centerX}" y="${cameraY}" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">${cameraInfo}</text>
         ${logoElement}
         <text x="${centerX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#AAAAAA" text-anchor="middle" dominant-baseline="middle">${exposureInfo}</text>
-        <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#888888" text-anchor="middle" dominant-baseline="middle">${dateTimeString}</text>
-        ${photographerElement}
+        <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#888888" text-anchor="middle" dominant-baseline="middle">${dateTimeDisplay}</text>
       </svg>`;
     },
 
@@ -204,7 +196,7 @@ const designs = {
       const photographerElement = photographerName
         ? `<text x="${leftTextX}" y="${
             centerY + textAdjustment + fontSize * 0.9
-          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="500" fill="#AAAAAA" dominant-baseline="central">Taken by: ${photographerName}</text>`
+          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="500" fill="#AAAAAA" dominant-baseline="central">Taken by ${photographerName}</text>`
         : "";
 
       return `
@@ -262,7 +254,7 @@ const designs = {
             frameHeight * 1.8 // Move lower to the bottom
           }" font-family="Arial, sans-serif" font-size="${
             smallFontSize * 0.9
-          }" font-weight="300" fill="#999999" text-anchor="middle" dominant-baseline="middle">Taken by: ${photographerName}</text>`
+          }" font-weight="300" fill="#999999" text-anchor="middle" dominant-baseline="middle">Taken by ${photographerName}</text>`
         : "";
 
       return `
@@ -299,7 +291,7 @@ const designs = {
       const photographerElement = photographerName
         ? `<text x="${imageWidth - 20}" y="${
             centerY + 80 // Change from 40 to 80 to align with date
-          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="300" fill="#999999" text-anchor="end" dominant-baseline="central">Taken by: ${photographerName}</text>`
+          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="300" fill="#999999" text-anchor="end" dominant-baseline="central">Taken by ${photographerName}</text>`
         : "";
 
       return `
@@ -350,7 +342,7 @@ const designs = {
             frameHeight * 1.6
           }" font-family="Courier, monospace" font-size="${
             smallFontSize * 0.8
-          }" font-weight="400" fill="#91785E" text-anchor="end" dominant-baseline="middle">Taken by: ${photographerName}</text>`
+          }" font-weight="400" fill="#91785E" text-anchor="end" dominant-baseline="middle">Taken by ${photographerName}</text>`
         : "";
 
       return `
@@ -395,7 +387,7 @@ const designs = {
             centerY + 70
           }" font-family="Courier, monospace" font-size="${
             smallFontSize * 0.8
-          }" font-weight="400" fill="#91785E" text-anchor="end">Taken by: ${photographerName}</text>`
+          }" font-weight="400" fill="#91785E" text-anchor="end">Taken by ${photographerName}</text>`
         : "";
 
       return `

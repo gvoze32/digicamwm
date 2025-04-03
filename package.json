@@ -17,10 +17,10 @@
   "license": "ISC",
   "dependencies": {
     "exif-parser": "^0.1.12",
-    "sharp": "^0.32.0"
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "electron": "^24.8.8",
+    "electron": "^35.1.3",
     "electron-builder": "^26.0.12"
   },
   "build": {
