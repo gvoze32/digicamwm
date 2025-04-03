@@ -7,7 +7,8 @@ const { getDesignById } = require("./designs");
 async function addWatermarkFrame(
   inputImagePath,
   outputPath,
-  designId = "classic"
+  designId = "classic",
+  photographerName = ""
 ) {
   try {
     const imageBuffer = fs.readFileSync(inputImagePath);
@@ -63,7 +64,8 @@ async function addWatermarkFrame(
       exposureTime,
       iso,
       dateTimeString,
-      designId
+      designId,
+      photographerName
     );
 
     await result.toFile(outputPath);
@@ -85,7 +87,8 @@ async function createPremiumWatermark(
   exposureTime,
   iso,
   dateTimeString,
-  designId = "classic"
+  designId = "classic",
+  photographerName = ""
 ) {
   try {
     const processedImage = sharp(imageBuffer, { failOnError: false }).rotate();
@@ -198,6 +201,7 @@ async function createPremiumWatermark(
         dateTimeString,
         fontSize,
         smallFontSize,
+        photographerName,
       });
 
       const watermarkBuffer = Buffer.from(watermarkSvg);
@@ -277,6 +281,7 @@ async function createPremiumWatermark(
         adjustedDividerBottom,
         fontSize,
         smallFontSize,
+        photographerName,
       });
 
       const watermarkBuffer = Buffer.from(watermarkSvg);

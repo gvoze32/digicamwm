@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Get elements
   const inputFolderInput = document.getElementById("input-folder");
   const outputFolderInput = document.getElementById("output-folder");
+  const photographerNameInput = document.getElementById("photographer-name");
   const browseInputBtn = document.getElementById("browse-input");
   const browseOutputBtn = document.getElementById("browse-output");
   const startButton = document.getElementById("start-button");
@@ -178,10 +179,14 @@ document.addEventListener("DOMContentLoaded", () => {
     progressText.textContent = "Starting...";
     progressCount.textContent = "0/0";
 
+    // Get the photographer name
+    const photographerName = photographerNameInput.value.trim();
+
     // Start processing with current design
     const result = await window.api.startProcessing({
       inputDir: inputDir,
       outputDir: outputDir,
+      photographerName: photographerName,
     });
 
     if (!result.success) {

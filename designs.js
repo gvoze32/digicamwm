@@ -20,6 +20,7 @@ const designs = {
         dateTimeString,
         fontSize,
         smallFontSize,
+        photographerName,
       } = params;
 
       // Adjust camera and logo positions
@@ -27,6 +28,15 @@ const designs = {
       const logoY = frameHeight * 0.3; // Moved up significantly from 0.85 to 0.7
       const exposureY = frameHeight * 1.4; // Moved down from 1.2 to 1.3
       const dateY = frameHeight * 1.8; // Moved down from 1.6 to 1.7
+
+      // Move photographer name lower and make it smaller
+      const photographerElement = photographerName
+        ? `<text x="${imageWidth - 20}" y="${
+            frameHeight * 1.85
+          }" font-family="Arial, sans-serif" font-size="${
+            smallFontSize * 0.75
+          }" font-weight="400" fill="#666666" text-anchor="end" dominant-baseline="middle">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${
@@ -45,6 +55,7 @@ const designs = {
         ${logoElement}
         <text x="${centerX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${exposureInfo}</text>
         <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${dateTimeString}</text>
+        ${photographerElement}
       </svg>`;
     },
 
@@ -69,7 +80,15 @@ const designs = {
         adjustedDividerBottom,
         fontSize,
         smallFontSize,
+        photographerName,
       } = params;
+
+      // Move photographer credit up slightly - reduce the Y offset
+      const photographerElement = photographerName
+        ? `<text x="${leftTextX}" y="${
+            centerY + textAdjustment + fontSize * 0.9
+          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="500" fill="#333333" dominant-baseline="central">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${frameHeight}" xmlns="http://www.w3.org/2000/svg">
@@ -83,6 +102,7 @@ const designs = {
         <text x="${leftTextX}" y="${
         centerY + textAdjustment
       }" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#111111" dominant-baseline="central" letter-spacing="0.5">${cameraInfo}</text>
+        ${photographerElement}
         ${logoElement}
         <line x1="${dividerX}" y1="${adjustedDividerTop}" x2="${dividerX}" y2="${adjustedDividerBottom}" stroke="#CCCCCC" stroke-width="2"/>
         ${
@@ -117,6 +137,7 @@ const designs = {
         dateTimeString,
         fontSize,
         smallFontSize,
+        photographerName,
       } = params;
 
       // Use same layout as classic, but with dark colors
@@ -124,6 +145,15 @@ const designs = {
       const logoY = frameHeight * 0.3;
       const exposureY = frameHeight * 1.4;
       const dateY = frameHeight * 1.8;
+
+      // Move photographer name lower and make it smaller
+      const photographerElement = photographerName
+        ? `<text x="${imageWidth - 20}" y="${
+            frameHeight * 1.85
+          }" font-family="Arial, sans-serif" font-size="${
+            smallFontSize * 0.75
+          }" font-weight="400" fill="#888888" text-anchor="end" dominant-baseline="middle">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${
@@ -142,6 +172,7 @@ const designs = {
         ${logoElement}
         <text x="${centerX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#AAAAAA" text-anchor="middle" dominant-baseline="middle">${exposureInfo}</text>
         <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#888888" text-anchor="middle" dominant-baseline="middle">${dateTimeString}</text>
+        ${photographerElement}
       </svg>`;
     },
 
@@ -166,7 +197,15 @@ const designs = {
         adjustedDividerBottom,
         fontSize,
         smallFontSize,
+        photographerName,
       } = params;
+
+      // Move photographer credit up slightly - reduce the Y offset
+      const photographerElement = photographerName
+        ? `<text x="${leftTextX}" y="${
+            centerY + textAdjustment + fontSize * 0.9
+          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="500" fill="#AAAAAA" dominant-baseline="central">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${frameHeight}" xmlns="http://www.w3.org/2000/svg">
@@ -180,6 +219,7 @@ const designs = {
         <text x="${leftTextX}" y="${
         centerY + textAdjustment
       }" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#FFFFFF" dominant-baseline="central" letter-spacing="0.5">${cameraInfo}</text>
+        ${photographerElement}
         ${logoElement}
         <line x1="${dividerX}" y1="${adjustedDividerTop}" x2="${dividerX}" y2="${adjustedDividerBottom}" stroke="#444444" stroke-width="2"/>
         ${
@@ -213,7 +253,17 @@ const designs = {
         dateTimeString,
         fontSize,
         smallFontSize,
+        photographerName,
       } = params;
+
+      // Center the photographer name at the bottom
+      const photographerElement = photographerName
+        ? `<text x="${centerX}" y="${
+            frameHeight * 1.8 // Move lower to the bottom
+          }" font-family="Arial, sans-serif" font-size="${
+            smallFontSize * 0.9
+          }" font-weight="300" fill="#999999" text-anchor="middle" dominant-baseline="middle">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${
@@ -227,6 +277,7 @@ const designs = {
         <text x="${centerX}" y="${
         frameHeight * 1.5
       }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="300" fill="#999999" text-anchor="middle" dominant-baseline="middle">${exposureInfo} · ${dateTimeString}</text>
+        ${photographerElement}
       </svg>`;
     },
 
@@ -241,7 +292,15 @@ const designs = {
         dateTimeString,
         leftTextX,
         smallFontSize,
+        photographerName,
       } = params;
+
+      // Position photographer credit on the right side, aligned with date/exposure text
+      const photographerElement = photographerName
+        ? `<text x="${imageWidth - 20}" y="${
+            centerY + 80 // Change from 40 to 80 to align with date
+          }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="300" fill="#999999" text-anchor="end" dominant-baseline="central">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${frameHeight}" xmlns="http://www.w3.org/2000/svg">
@@ -252,6 +311,7 @@ const designs = {
       }" font-family="Arial, sans-serif" font-size="${
         smallFontSize * 1.2
       }" font-weight="300" fill="#333333" dominant-baseline="central">${cameraInfo}</text>
+        ${photographerElement}
         <text x="${leftTextX}" y="${
         centerY + 80
       }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="300" fill="#999999" dominant-baseline="central">${exposureInfo} · ${dateTimeString}</text>
@@ -276,12 +336,22 @@ const designs = {
         dateTimeString,
         fontSize,
         smallFontSize,
+        photographerName,
       } = params;
 
       // Move exposureInfo text up to be right below cameraInfo
       const cameraY = frameHeight * 0.4;
       const exposureY = frameHeight * 0.7; // Changed from 1.5 to 0.7
       const dateY = frameHeight * 1.8;
+
+      // Add photographer name in bottom right, small size
+      const photographerElement = photographerName
+        ? `<text x="${imageWidth - 20}" y="${
+            frameHeight * 1.6
+          }" font-family="Courier, monospace" font-size="${
+            smallFontSize * 0.8
+          }" font-weight="400" fill="#91785E" text-anchor="end" dominant-baseline="middle">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${
@@ -303,6 +373,7 @@ const designs = {
         }" y="${dateY}" font-family="Courier, monospace" font-size="${
         smallFontSize * 0.8
       }" font-weight="400" fill="#91785E" text-anchor="end">${dateTimeString}</text>
+        ${photographerElement}
       </svg>`;
     },
 
@@ -315,7 +386,17 @@ const designs = {
         exposureInfo,
         dateTimeString,
         smallFontSize,
+        photographerName,
       } = params;
+
+      // Move photographer credit to right side aligned with exposure info and reduce text size
+      const photographerElement = photographerName
+        ? `<text x="${imageWidth - 20}" y="${
+            centerY + 70
+          }" font-family="Courier, monospace" font-size="${
+            smallFontSize * 0.8
+          }" font-weight="400" fill="#91785E" text-anchor="end">Taken by: ${photographerName}</text>`
+        : "";
 
       return `
       <svg width="${imageWidth}" height="${frameHeight}" xmlns="http://www.w3.org/2000/svg">
@@ -331,6 +412,7 @@ const designs = {
         }" font-family="Courier, monospace" font-size="${
         smallFontSize * 1.2
       }" font-weight="700" fill="#70573B">${cameraInfo}</text>
+        ${photographerElement}
         <text x="20" y="${
           centerY + 70
         }" font-family="Courier, monospace" font-size="${smallFontSize}" font-weight="400" fill="#91785E">${exposureInfo}</text>
