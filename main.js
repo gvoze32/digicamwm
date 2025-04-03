@@ -2,16 +2,18 @@ const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const { addWatermarkFrame, processBulkImages } = require("./index");
+const { getDesignList, getDesignById, defaultDesign } = require("./designs");
 
 // Keep a global reference of the window object
 let mainWindow;
+let currentDesignId = defaultDesign;
 
 function createWindow() {
   // Create the browser window
   mainWindow = new BrowserWindow({
     width: 900,
     height: 700,
-    icon: path.join(__dirname, "assets/digicamwm.png"), // Add application icon
+    icon: path.join(__dirname, "assets/icons/digicamwm.png"), // Add application icon
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
@@ -53,6 +55,29 @@ ipcMain.handle("select-folder", async (event, purpose) => {
   }
 });
 
+// Handle getting available designs
+ipcMain.handle("get-designs", async () => {
+  return getDesignList();
+});
+
+// Handle setting current design
+ipcMain.handle("set-design", async (event, designId) => {
+  currentDesignId = designId;
+  return { success: true, designId };
+});
+
+// Handle getting current design
+ipcMain.handle("get-current-design", async () => {
+  // Return only the serializable properties, not the full design object with functions
+  const design = getDesignById(currentDesignId);
+  return {
+    id: design.id,
+    name: design.name,
+    description: design.description,
+    thumbnailPath: design.thumbnailPath,
+  };
+});
+
 // Handle starting the watermark process
 ipcMain.handle("start-processing", async (event, { inputDir, outputDir }) => {
   // Create output directory if it doesn't exist
@@ -89,9 +114,9 @@ ipcMain.handle("start-processing", async (event, { inputDir, outputDir }) => {
         total: imageFiles.length,
       });
 
-      // Process the image
+      // Process the image with the selected design
       try {
-        await addWatermarkFrame(inputPath, outputPath);
+        await addWatermarkFrame(inputPath, outputPath, currentDesignId);
 
         // Send preview of processed image
         const previewPath = outputPath;

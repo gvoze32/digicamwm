@@ -41,6 +41,35 @@
           <button id="browse-output">Browse</button>
         </div>
       </div>
+      
+      <div class="input-group">
+        <label for="design-selector">Watermark Design:</label>
+        <div class="design-selector-container">
+          <div class="design-selector-left">
+            <select id="design-selector" class="design-dropdown"></select>
+          </div>
+          
+          <div class="design-preview-container">
+            <div class="design-info">
+              <div class="design-details">
+                <h4 id="design-name">Classic</h4>
+                <p id="design-description">Clean white frame with logo and camera information</p>
+              </div>
+            </div>
+            
+            <div class="design-examples">
+              <div class="example-image-container">
+                <img id="design-thumbnail-landscape" class="design-thumbnail" src="assets/designs/classic-landscape.jpg" alt="Design landscape example" data-fullsize="assets/designs/classic-landscape.jpg">
+                <span class="example-label">Landscape</span>
+              </div>
+              <div class="example-image-container">
+                <img id="design-thumbnail-portrait" class="design-thumbnail" src="assets/designs/classic-portrait.jpg" alt="Design portrait example" data-fullsize="assets/designs/classic-portrait.jpg">
+                <span class="example-label">Portrait</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     
     <div class="actions">
@@ -61,9 +90,17 @@
     <div class="preview-section">
       <h3>Image Preview</h3>
       <div class="preview-container">
-        <img id="preview-image" src="assets/placeholder.png" alt="Image preview will appear here">
+        <img id="preview-image" src="assets/thumbnails/placeholder.png" alt="Image preview will appear here">
       </div>
       <div class="current-file" id="current-file">No file selected</div>
+    </div>
+  </div>
+  
+  <div id="image-preview-modal" class="modal">
+    <div class="modal-content-container">
+      <span class="close-modal">&times;</span>
+      <img class="modal-content" id="enlarged-image">
+      <div class="modal-caption" id="modal-caption"></div>
     </div>
   </div>
   

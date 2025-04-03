@@ -2,8 +2,13 @@ const sharp = require("sharp");
 const fs = require("fs");
 const path = require("path");
 const ExifParser = require("exif-parser");
+const { getDesignById } = require("./designs");
 
-async function addWatermarkFrame(inputImagePath, outputPath) {
+async function addWatermarkFrame(
+  inputImagePath,
+  outputPath,
+  designId = "classic"
+) {
   try {
     const imageBuffer = fs.readFileSync(inputImagePath);
 
@@ -57,7 +62,8 @@ async function addWatermarkFrame(inputImagePath, outputPath) {
       fNumber,
       exposureTime,
       iso,
-      dateTimeString
+      dateTimeString,
+      designId
     );
 
     await result.toFile(outputPath);
@@ -78,7 +84,8 @@ async function createPremiumWatermark(
   fNumber,
   exposureTime,
   iso,
-  dateTimeString
+  dateTimeString,
+  designId = "classic"
 ) {
   try {
     const processedImage = sharp(imageBuffer, { failOnError: false }).rotate();
@@ -109,16 +116,62 @@ async function createPremiumWatermark(
 
     let brandLogo = "";
     try {
-      const logoPath = path.join(__dirname, "assets", `${normalizedMake}.png`);
-      const logoBuffer = fs.readFileSync(logoPath);
-      const logoBase64 = logoBuffer.toString("base64");
-      brandLogo = `data:image/png;base64,${logoBase64}`;
+      // Get the list of available model logos
+      const logoDir = path.join(__dirname, "assets/models");
+      const availableLogos = fs
+        .readdirSync(logoDir)
+        .filter((file) => file.endsWith(".png"))
+        .map((file) => file.toLowerCase());
+
+      // Normalize and split camera make into individual words
+      const makeWords = cameraMake.toLowerCase().trim().split(/\s+/);
+
+      // Find a matching logo by checking each word in the camera make
+      let logoFileName = null;
+      for (const word of makeWords) {
+        // Skip very short words (like "co", "inc", etc.)
+        if (word.length <= 2) continue;
+
+        // Check if any logo filename contains this word
+        const matchingLogo = availableLogos.find((logo) => {
+          // Remove .png and compare with the current word
+          const logoName = logo.replace(".png", "");
+          return (
+            logoName === word ||
+            word.includes(logoName) ||
+            logoName.includes(word)
+          );
+        });
+
+        if (matchingLogo) {
+          logoFileName = matchingLogo;
+          break;
+        }
+      }
+
+      if (logoFileName) {
+        const logoPath = path.join(logoDir, logoFileName);
+        const logoBuffer = fs.readFileSync(logoPath);
+        const logoBase64 = logoBuffer.toString("base64");
+        brandLogo = `data:image/png;base64,${logoBase64}`;
+        console.log(
+          `Found matching logo: ${logoFileName} for camera make: ${cameraMake}`
+        );
+      } else {
+        console.log(`No matching logo found for camera make: ${cameraMake}`);
+        brandLogo = null;
+      }
     } catch (error) {
-      console.log(`Error loading PNG logo for ${cameraMake}. Using fallback.`);
+      console.log(
+        `Error loading camera brand logo for ${cameraMake}:`,
+        error.message
+      );
       brandLogo = null;
     }
 
     const isPortrait = imageHeight > imageWidth;
+
+    const selectedDesign = getDesignById(designId);
 
     if (isPortrait) {
       const centerX = imageWidth / 2;
@@ -126,43 +179,28 @@ async function createPremiumWatermark(
       const logoHeight = Math.round(frameHeight * 0.5);
       const logoWidth = logoHeight * 1.5;
 
-      const cameraY = frameHeight * 0.4;
-      const exposureY = frameHeight * 1.35;
-      const dateY = frameHeight * 1.7;
-
-      const logoY = cameraY * 0.6 + exposureY * 0.4 - logoHeight / 2;
+      const logoY = frameHeight * 0.8 - logoHeight / 2; // Changed from 0.875 to 0.7
       const logoX = centerX - logoWidth / 2;
 
       const logoElement = brandLogo
         ? `<image x="${logoX}" y="${logoY}" width="${logoWidth}" height="${logoHeight}" href="${brandLogo}" preserveAspectRatio="xMidYMid meet" />`
         : `<text x="${centerX}" y="${
-            cameraY * 0.6 + exposureY * 0.4
+            frameHeight * 0.8
           }" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#333333" text-anchor="middle" dominant-baseline="central">${cameraMake}</text>`;
 
-      const bottomFrameSvg = `
-      <svg width="${imageWidth}" height="${
-        frameHeight * 2
-      }" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1.0" />
-            <stop offset="100%" style="stop-color:#F8F8F8;stop-opacity:1.0" />
-          </linearGradient>
-        </defs>
-        <rect width="${imageWidth}" height="${
-        frameHeight * 2
-      }" fill="url(#grad)"/>
-        
-        <text x="${centerX}" y="${cameraY}" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#111111" text-anchor="middle" dominant-baseline="middle">${cameraInfo}</text>
-        
-        ${logoElement}
-        
-        <text x="${centerX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${exposureInfo}</text>
-        
-        <text x="${centerX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="middle" dominant-baseline="middle">${dateTimeString}</text>
-      </svg>`;
+      const watermarkSvg = selectedDesign.renderPortrait({
+        imageWidth,
+        frameHeight,
+        centerX,
+        logoElement,
+        cameraInfo,
+        exposureInfo,
+        dateTimeString,
+        fontSize,
+        smallFontSize,
+      });
 
-      const bottomBuffer = Buffer.from(bottomFrameSvg);
+      const watermarkBuffer = Buffer.from(watermarkSvg);
 
       return sharp(processedMetadata.data)
         .withMetadata()
@@ -175,7 +213,7 @@ async function createPremiumWatermark(
         })
         .composite([
           {
-            input: bottomBuffer,
+            input: watermarkBuffer,
             top: imageHeight,
             left: 0,
           },
@@ -220,35 +258,26 @@ async function createPremiumWatermark(
             centerY + textAdjustment
           }" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#333333" text-anchor="middle" dominant-baseline="central">${cameraMake}</text>`;
 
-      const watermarkSvg = `
-      <svg width="${imageWidth}" height="${frameHeight}" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1.0" />
-            <stop offset="100%" style="stop-color:#F8F8F8;stop-opacity:1.0" />
-          </linearGradient>
-        </defs>
-        <rect width="${imageWidth}" height="${frameHeight}" fill="url(#grad)"/>
-        
-        <text x="${leftTextX}" y="${
-        centerY + textAdjustment
-      }" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#111111" dominant-baseline="central" letter-spacing="0.5">${cameraInfo}</text>
-        
-        ${logoElement}
-        
-        <line x1="${dividerX}" y1="${adjustedDividerTop}" x2="${dividerX}" y2="${adjustedDividerBottom}" stroke="#CCCCCC" stroke-width="2"/>
-        
-        ${
-          exposureInfo
-            ? `<text x="${rightTextX}" y="${exposureY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#333333" text-anchor="end" dominant-baseline="central">${exposureInfo}</text>`
-            : ""
-        }
-        ${
-          dateTimeString
-            ? `<text x="${rightTextX}" y="${dateY}" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="700" fill="#666666" text-anchor="end" dominant-baseline="central">${dateTimeString}</text>`
-            : ""
-        }
-      </svg>`;
+      const watermarkSvg = selectedDesign.renderLandscape({
+        imageWidth,
+        frameHeight,
+        centerY,
+        textAdjustment,
+        logoAdjustment,
+        logoElement,
+        cameraInfo,
+        exposureInfo,
+        dateTimeString,
+        leftTextX,
+        rightTextX,
+        exposureY,
+        dateY,
+        dividerX,
+        adjustedDividerTop,
+        adjustedDividerBottom,
+        fontSize,
+        smallFontSize,
+      });
 
       const watermarkBuffer = Buffer.from(watermarkSvg);
 

@@ -29,15 +29,15 @@
     "mac": {
       "category": "public.app-category.photography",
       "target": "dmg",
-      "icon": "assets/digicamwm.png"
+      "icon": "assets/icons/digicamwm.png"
     },
     "win": {
       "target": "nsis",
-      "icon": "assets/digicamwm.png"
+      "icon": "assets/icons/digicamwm.png"
     },
     "linux": {
       "target": "AppImage",
-      "icon": "assets/digicamwm.png"
+      "icon": "assets/icons/digicamwm.png"
     },
     "files": [
       "**/*",

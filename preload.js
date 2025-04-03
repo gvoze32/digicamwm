@@ -15,4 +15,8 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.removeAllListeners("process-status");
     ipcRenderer.removeAllListeners("image-processed");
   },
+  // New methods for design selection
+  getDesigns: () => ipcRenderer.invoke("get-designs"),
+  setDesign: (designId) => ipcRenderer.invoke("set-design", designId),
+  getCurrentDesign: () => ipcRenderer.invoke("get-current-design"),
 });

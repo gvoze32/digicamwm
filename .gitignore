@@ -3,5 +3,4 @@ raw/
 processed/
 .vscode
 .DS_Store
-/assets/.DS_Store
 dist/

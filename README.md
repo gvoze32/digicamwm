@@ -5,7 +5,7 @@
 
 A powerful digital camera watermarking tool that adds professional-looking frames with camera information to your photos.
 
-![Screenshot of DigiCamWM](assets/screenshot.jpeg)
+![Screenshot of DigiCamWM](assets/thumbnails/screenshot.jpeg)
 
 ## Features
 
@@ -82,13 +82,13 @@ npm run build
 
 ## Camera Brand Logo Support
 
-DigiCamWM will automatically look for camera brand logos in the `assets` folder. The file should be named according to the camera manufacturer (lowercase) with a `.png` extension.
+DigiCamWM will automatically look for camera brand logos in the `assets/models` folder. The file should be named according to the camera manufacturer (lowercase) with a `.png` extension.
 
 For example:
 
-- `assets/sony.png`
-- `assets/canon.png`
-- `assets/nikon.png`
+- `assets/models/sony.png`
+- `assets/models/canon.png`
+- `assets/models/nikon.png`
 
 ## Technologies
 
