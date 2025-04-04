@@ -1,5 +1,7 @@
 # DigiCamWM
 
+🇬🇧 English | [🇮🇩 Bahasa Indonesia](README.ID.md)
+
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gvoze32/digicamwm)
 ![License](https://img.shields.io/github/license/gvoze32/digicamwm)
 
