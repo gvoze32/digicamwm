@@ -28,6 +28,18 @@ Download the latest version from the [Releases page](https://github.com/gvoze32/
 - **macOS**: Download the `.dmg` file
 - **Linux**: Download the `.AppImage` file
 
+### Troubleshooting Installation
+
+#### macOS Security Issues
+
+If you encounter security warnings on macOS when trying to open the application ("DigiCamWM is damaged and can’t be opened. You should move it to the Trash."), you can use the following Terminal command to remove the quarantine attribute:
+
+```bash
+xattr -c /Applications/DigiCamWM.app
+```
+
+This removes the quarantine flag that macOS applies to applications downloaded from the internet.
+
 ## Usage
 
 ### GUI Application
