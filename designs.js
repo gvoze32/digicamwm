@@ -416,6 +416,175 @@ const designs = {
       </svg>`;
     },
   },
+
+  simple: {
+    id: "simple",
+    name: "Simple",
+    description: "Minimalist design with just camera logo and model",
+    thumbnailPath: "assets/designs/simple-landscape.jpg",
+
+    renderPortrait: (params) => {
+      const {
+        imageWidth,
+        frameHeight,
+        centerX,
+        logoElement,
+        cameraInfo,
+        fontSize,
+        smallFontSize,
+        photographerName,
+      } = params;
+
+      // Move logo much higher up (from 0.65 to 0.5)
+      const logoY = frameHeight * 0.5;
+      // Increase vertical spacing between logo and text for better balance
+      const cameraY = frameHeight * 1.3;
+      const photographerY = frameHeight * 1.6;
+
+      // Create centered SVG logo with fixed positioning
+      let logoDisplay;
+      if (logoElement) {
+        // Extract the source of the image from the original logo element
+        const srcMatch = logoElement.match(/href="([^"]+)"/);
+        const imgSrc = srcMatch ? srcMatch[1] : "";
+
+        if (imgSrc) {
+          // Create a brand new image element with precise centering - INCREASED SIZE FURTHER (from 140x110 to 180x150)
+          logoDisplay = `
+            <image 
+              href="${imgSrc}" 
+              x="${centerX - 90}" 
+              y="${logoY - 75}" 
+              width="180" 
+              height="150" 
+              preserveAspectRatio="xMidYMid meet" 
+            />`;
+        } else {
+          // Fallback if we couldn't extract the source
+          logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
+            fontSize * 1.2
+          }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
+            cameraInfo.split(" ")[0]
+          }</text>`;
+        }
+      } else {
+        // Text fallback
+        logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
+          fontSize * 1.2
+        }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
+          cameraInfo.split(" ")[0]
+        }</text>`;
+      }
+
+      // Photographer text (if provided)
+      const photographerElement = photographerName
+        ? `<text x="${centerX}" y="${photographerY}" font-family="Arial, sans-serif" font-size="${
+            smallFontSize * 0.8
+          }" font-weight="300" fill="#777777" text-anchor="middle" dominant-baseline="middle">${photographerName}</text>`
+        : "";
+
+      return `
+      <svg width="${imageWidth}" height="${
+        frameHeight * 2
+      }" xmlns="http://www.w3.org/2000/svg">
+        <rect width="${imageWidth}" height="${frameHeight * 2}" fill="#FFFFFF"/>
+        
+        <!-- Logo (explicit positioning) -->
+        ${logoDisplay}
+        
+        <!-- Camera model (centered) -->
+        <text x="${centerX}" y="${cameraY}" font-family="Arial, sans-serif" font-size="${
+        fontSize * 0.9
+      }" font-weight="400" fill="#333333" text-anchor="middle" dominant-baseline="middle">${cameraInfo}</text>
+        
+        <!-- Photographer name (optional) -->
+        ${photographerElement}
+      </svg>`;
+    },
+
+    renderLandscape: (params) => {
+      const {
+        imageWidth,
+        frameHeight,
+        centerY,
+        logoElement,
+        cameraInfo,
+        fontSize,
+        smallFontSize,
+        photographerName,
+      } = params;
+
+      const centerX = imageWidth / 2;
+
+      // Move logo higher up
+      const logoY = centerY - 45;
+
+      // Move text even lower (from 70 to 80)
+      const textY = centerY + 80;
+
+      // Create centered SVG logo with fixed positioning
+      let logoDisplay;
+      if (logoElement) {
+        const srcMatch = logoElement.match(/href="([^"]+)"/);
+        const imgSrc = srcMatch ? srcMatch[1] : "";
+
+        if (imgSrc) {
+          // Create a brand new image element with precise centering - INCREASED SIZE from 100x80 to 120x100
+          logoDisplay = `
+            <image 
+              href="${imgSrc}" 
+              x="${centerX - 60}" 
+              y="${logoY - 50}" 
+              width="120" 
+              height="100" 
+              preserveAspectRatio="xMidYMid meet" 
+            />`;
+        } else {
+          // Fallback if we couldn't extract the source
+          logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
+            fontSize * 1.2
+          }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
+            cameraInfo.split(" ")[0]
+          }</text>`;
+        }
+      } else {
+        // Text fallback
+        logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
+          fontSize * 1.2
+        }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
+          cameraInfo.split(" ")[0]
+        }</text>`;
+      }
+
+      // Create a combined text element with two different text styles
+      // We'll use separate tspan elements with different styles inside a single text element
+      const combinedTextElement = `
+        <text x="${centerX}" y="${textY}" font-family="Arial, sans-serif" text-anchor="middle" dominant-baseline="central">
+          <tspan font-size="${
+            fontSize * 0.9
+          }" font-weight="400" fill="#333333">${cameraInfo}</tspan>
+          ${
+            photographerName
+              ? `<tspan dx="10" font-size="${
+                  smallFontSize * 0.7
+                }" font-weight="300" fill="#999999">by ${photographerName}</tspan>`
+              : ""
+          }
+        </text>
+      `;
+
+      return `
+      <svg width="${imageWidth}" height="${frameHeight}" xmlns="http://www.w3.org/2000/svg">
+        <rect width="${imageWidth}" height="${frameHeight}" fill="#FFFFFF"/>
+        
+        <!-- Logo (explicit positioning) -->
+        ${logoDisplay}
+        
+        <!-- Combined camera model and photographer name (always centered) -->
+        ${combinedTextElement}
+      </svg>`;
+    },
+  },
 };
 
 // Get a list of all available designs
