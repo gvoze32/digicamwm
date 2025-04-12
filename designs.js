@@ -1,14 +1,10 @@
-/**
- * Watermark design templates
- */
 const designs = {
   classic: {
     id: "classic",
     name: "Classic",
     description: "Clean white frame with logo and camera information",
-    thumbnailPath: "assets/designs/classic-landscape.jpg", // Changed from .png to .jpg
+    thumbnailPath: "assets/designs/classic-landscape.jpg",
 
-    // The rendering function for portrait orientation
     renderPortrait: (params) => {
       const {
         imageWidth,
@@ -23,13 +19,11 @@ const designs = {
         photographerName,
       } = params;
 
-      // Adjust camera and logo positions
-      const cameraY = frameHeight * 0.4; // Moved up slightly
-      const logoY = frameHeight * 0.3; // Moved up significantly from 0.85 to 0.7
-      const exposureY = frameHeight * 1.4; // Moved down from 1.2 to 1.3
-      const dateY = frameHeight * 1.8; // Moved down from 1.6 to 1.7
+      const cameraY = frameHeight * 0.4;
+      const logoY = frameHeight * 0.3;
+      const exposureY = frameHeight * 1.4;
+      const dateY = frameHeight * 1.8;
 
-      // Combine datetime and photographer info with a divider
       let dateTimeDisplay = dateTimeString;
       if (photographerName) {
         dateTimeDisplay += ` | Taken by ${photographerName}`;
@@ -55,7 +49,6 @@ const designs = {
       </svg>`;
     },
 
-    // The rendering function for landscape orientation
     renderLandscape: (params) => {
       const {
         imageWidth,
@@ -79,7 +72,6 @@ const designs = {
         photographerName,
       } = params;
 
-      // Move photographer credit up slightly - reduce the Y offset
       const photographerElement = photographerName
         ? `<text x="${leftTextX}" y="${
             centerY + textAdjustment + fontSize * 0.9
@@ -117,11 +109,10 @@ const designs = {
 
   dark: {
     id: "dark",
-    name: "Dark", // Changed from "Dark Theme" to just "Dark"
+    name: "Dark",
     description: "Elegant dark frame for your photos",
     thumbnailPath: "assets/designs/dark-landscape.jpg",
 
-    // The rendering function for portrait orientation - matching classic layout
     renderPortrait: (params) => {
       const {
         imageWidth,
@@ -136,13 +127,11 @@ const designs = {
         photographerName,
       } = params;
 
-      // Use same layout as classic, but with dark colors
       const cameraY = frameHeight * 0.4;
       const logoY = frameHeight * 0.3;
       const exposureY = frameHeight * 1.4;
       const dateY = frameHeight * 1.8;
 
-      // Combine datetime and photographer info with a divider
       let dateTimeDisplay = dateTimeString;
       if (photographerName) {
         dateTimeDisplay += ` | Taken by ${photographerName}`;
@@ -168,7 +157,6 @@ const designs = {
       </svg>`;
     },
 
-    // The rendering function for landscape orientation - matching classic layout
     renderLandscape: (params) => {
       const {
         imageWidth,
@@ -192,7 +180,6 @@ const designs = {
         photographerName,
       } = params;
 
-      // Move photographer credit up slightly - reduce the Y offset
       const photographerElement = photographerName
         ? `<text x="${leftTextX}" y="${
             centerY + textAdjustment + fontSize * 0.9
@@ -232,7 +219,7 @@ const designs = {
     id: "minimal",
     name: "Minimal",
     description: "Sleek, modern design with minimal elements",
-    thumbnailPath: "assets/designs/minimal-landscape.jpg", // Changed from .png to .jpg
+    thumbnailPath: "assets/designs/minimal-landscape.jpg",
 
     renderPortrait: (params) => {
       const {
@@ -248,10 +235,9 @@ const designs = {
         photographerName,
       } = params;
 
-      // Center the photographer name at the bottom
       const photographerElement = photographerName
         ? `<text x="${centerX}" y="${
-            frameHeight * 1.8 // Move lower to the bottom
+            frameHeight * 1.8
           }" font-family="Arial, sans-serif" font-size="${
             smallFontSize * 0.9
           }" font-weight="300" fill="#999999" text-anchor="middle" dominant-baseline="middle">Taken by ${photographerName}</text>`
@@ -287,10 +273,9 @@ const designs = {
         photographerName,
       } = params;
 
-      // Position photographer credit on the right side, aligned with date/exposure text
       const photographerElement = photographerName
         ? `<text x="${imageWidth - 20}" y="${
-            centerY + 80 // Change from 40 to 80 to align with date
+            centerY + 80
           }" font-family="Arial, sans-serif" font-size="${smallFontSize}" font-weight="300" fill="#999999" text-anchor="end" dominant-baseline="central">Taken by ${photographerName}</text>`
         : "";
 
@@ -315,7 +300,7 @@ const designs = {
     id: "vintage",
     name: "Vintage",
     description: "Classic film-inspired border",
-    thumbnailPath: "assets/designs/vintage-landscape.jpg", // Changed from .png to .jpg
+    thumbnailPath: "assets/designs/vintage-landscape.jpg",
 
     renderPortrait: (params) => {
       const {
@@ -331,12 +316,10 @@ const designs = {
         photographerName,
       } = params;
 
-      // Move exposureInfo text up to be right below cameraInfo
       const cameraY = frameHeight * 0.4;
-      const exposureY = frameHeight * 0.7; // Changed from 1.5 to 0.7
+      const exposureY = frameHeight * 0.7;
       const dateY = frameHeight * 1.8;
 
-      // Add photographer name in bottom right, small size
       const photographerElement = photographerName
         ? `<text x="${imageWidth - 20}" y="${
             frameHeight * 1.6
@@ -381,7 +364,6 @@ const designs = {
         photographerName,
       } = params;
 
-      // Move photographer credit to right side aligned with exposure info and reduce text size
       const photographerElement = photographerName
         ? `<text x="${imageWidth - 20}" y="${
             centerY + 70
@@ -435,21 +417,16 @@ const designs = {
         photographerName,
       } = params;
 
-      // Move logo much higher up (from 0.65 to 0.5)
       const logoY = frameHeight * 0.5;
-      // Increase vertical spacing between logo and text for better balance
       const cameraY = frameHeight * 1.3;
       const photographerY = frameHeight * 1.6;
 
-      // Create centered SVG logo with fixed positioning
       let logoDisplay;
       if (logoElement) {
-        // Extract the source of the image from the original logo element
         const srcMatch = logoElement.match(/href="([^"]+)"/);
         const imgSrc = srcMatch ? srcMatch[1] : "";
 
         if (imgSrc) {
-          // Create a brand new image element with precise centering - INCREASED SIZE FURTHER (from 140x110 to 180x150)
           logoDisplay = `
             <image 
               href="${imgSrc}" 
@@ -460,7 +437,6 @@ const designs = {
               preserveAspectRatio="xMidYMid meet" 
             />`;
         } else {
-          // Fallback if we couldn't extract the source
           logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
             fontSize * 1.2
           }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
@@ -468,7 +444,6 @@ const designs = {
           }</text>`;
         }
       } else {
-        // Text fallback
         logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
           fontSize * 1.2
         }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
@@ -476,7 +451,6 @@ const designs = {
         }</text>`;
       }
 
-      // Photographer text (if provided)
       const photographerElement = photographerName
         ? `<text x="${centerX}" y="${photographerY}" font-family="Arial, sans-serif" font-size="${
             smallFontSize * 0.8
@@ -489,15 +463,12 @@ const designs = {
       }" xmlns="http://www.w3.org/2000/svg">
         <rect width="${imageWidth}" height="${frameHeight * 2}" fill="#FFFFFF"/>
         
-        <!-- Logo (explicit positioning) -->
         ${logoDisplay}
         
-        <!-- Camera model (centered) -->
         <text x="${centerX}" y="${cameraY}" font-family="Arial, sans-serif" font-size="${
         fontSize * 0.9
       }" font-weight="400" fill="#333333" text-anchor="middle" dominant-baseline="middle">${cameraInfo}</text>
         
-        <!-- Photographer name (optional) -->
         ${photographerElement}
       </svg>`;
     },
@@ -516,20 +487,16 @@ const designs = {
 
       const centerX = imageWidth / 2;
 
-      // Move logo higher up
       const logoY = centerY - 45;
 
-      // Move text even lower (from 70 to 80)
       const textY = centerY + 80;
 
-      // Create centered SVG logo with fixed positioning
       let logoDisplay;
       if (logoElement) {
         const srcMatch = logoElement.match(/href="([^"]+)"/);
         const imgSrc = srcMatch ? srcMatch[1] : "";
 
         if (imgSrc) {
-          // Create a brand new image element with precise centering - INCREASED SIZE from 100x80 to 120x100
           logoDisplay = `
             <image 
               href="${imgSrc}" 
@@ -540,7 +507,6 @@ const designs = {
               preserveAspectRatio="xMidYMid meet" 
             />`;
         } else {
-          // Fallback if we couldn't extract the source
           logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
             fontSize * 1.2
           }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
@@ -548,7 +514,6 @@ const designs = {
           }</text>`;
         }
       } else {
-        // Text fallback
         logoDisplay = `<text x="${centerX}" y="${logoY}" font-family="Arial, sans-serif" font-size="${
           fontSize * 1.2
         }" font-weight="500" fill="#333333" text-anchor="middle" dominant-baseline="middle">${
@@ -556,8 +521,6 @@ const designs = {
         }</text>`;
       }
 
-      // Create a combined text element with two different text styles
-      // We'll use separate tspan elements with different styles inside a single text element
       const combinedTextElement = `
         <text x="${centerX}" y="${textY}" font-family="Arial, sans-serif" text-anchor="middle" dominant-baseline="central">
           <tspan font-size="${
@@ -577,17 +540,231 @@ const designs = {
       <svg width="${imageWidth}" height="${frameHeight}" xmlns="http://www.w3.org/2000/svg">
         <rect width="${imageWidth}" height="${frameHeight}" fill="#FFFFFF"/>
         
-        <!-- Logo (explicit positioning) -->
         ${logoDisplay}
         
-        <!-- Combined camera model and photographer name (always centered) -->
         ${combinedTextElement}
+      </svg>`;
+    },
+  },
+
+  micro: {
+    id: "micro",
+    name: "Micro",
+    description: "Ultra-thin frame with minimal information",
+    thumbnailPath: "assets/designs/micro-landscape.jpg",
+
+    renderPortrait: (params) => {
+      const {
+        imageWidth,
+        frameHeight,
+        centerX,
+        logoElement,
+        cameraInfo,
+        exposureInfo,
+        dateTimeString,
+        fontSize,
+        smallFontSize,
+        photographerName,
+      } = params;
+
+      const thinFrameHeight = Math.round(frameHeight * 0.5);
+      const middleY = thinFrameHeight * 0.5;
+
+      let logoDisplay = "";
+      let logoWidth = 0;
+      let logoHeight = 0;
+      if (logoElement) {
+        const srcMatch = logoElement.match(/href="([^"]+)"/);
+        if (srcMatch && srcMatch[1]) {
+          logoHeight = Math.round(thinFrameHeight * 0.65);
+          logoWidth = Math.round(logoHeight * 1.2);
+          logoDisplay = `
+            <image 
+              href="${srcMatch[1]}" 
+              x="15" 
+              y="${middleY - logoHeight / 2}" 
+              width="${logoWidth}" 
+              height="${logoHeight}" 
+              preserveAspectRatio="xMidYMid meet" 
+            />`;
+        }
+      }
+
+      const leftMargin = logoDisplay ? logoWidth + 25 : 20;
+
+      const verticalShift = 2;
+      const verticalGap = 4;
+
+      const cameraInfoY = middleY - 4 + verticalShift;
+
+      const exposureInfoY = cameraInfoY + verticalGap + smallFontSize * 0.7;
+
+      const estimatedCameraTextWidth = cameraInfo
+        ? cameraInfo.length * (smallFontSize * 0.6)
+        : 0;
+      const photographerX = leftMargin + estimatedCameraTextWidth + 10;
+
+      const cameraInfoElement = `
+        <text 
+          x="${leftMargin}" 
+          y="${cameraInfoY}" 
+          font-family="Arial, sans-serif" 
+          font-size="${smallFontSize}" 
+          font-weight="500" 
+          fill="#333333" 
+          dominant-baseline="middle"
+        >${cameraInfo || ""}</text>
+      `;
+
+      const photographerElement = photographerName
+        ? `
+        <text 
+          x="${photographerX}" 
+          y="${cameraInfoY}" 
+          font-family="Arial, sans-serif" 
+          font-size="${smallFontSize * 0.7}" 
+          font-weight="300" 
+          fill="#777777" 
+          dominant-baseline="middle"
+        >by ${photographerName}</text>
+      `
+        : "";
+
+      const exposureInfoElement = exposureInfo
+        ? `
+        <text 
+          x="${leftMargin}" 
+          y="${exposureInfoY}" 
+          font-family="Arial, sans-serif" 
+          font-size="${smallFontSize * 0.7}" 
+          font-weight="300" 
+          fill="#777777" 
+          dominant-baseline="middle"
+        >${exposureInfo}</text>
+      `
+        : "";
+
+      return `
+      <svg width="${imageWidth}" height="${thinFrameHeight}" xmlns="http://www.w3.org/2000/svg">
+        <rect width="${imageWidth}" height="${thinFrameHeight}" fill="#FFFFFF"/>
+        
+        ${logoDisplay || ""}
+        
+        ${cameraInfoElement}
+        
+        ${photographerElement}
+        
+        ${exposureInfoElement}
+      </svg>`;
+    },
+
+    renderLandscape: (params) => {
+      const {
+        imageWidth,
+        frameHeight,
+        centerY,
+        logoElement,
+        cameraInfo,
+        exposureInfo,
+        dateTimeString,
+        fontSize,
+        smallFontSize,
+        photographerName,
+      } = params;
+
+      const thinFrameHeight = Math.round(frameHeight * 0.5);
+      const middleY = thinFrameHeight * 0.5;
+
+      let logoDisplay = "";
+      let logoWidth = 0;
+      let logoHeight = 0;
+      if (logoElement) {
+        const srcMatch = logoElement.match(/href="([^"]+)"/);
+        if (srcMatch && srcMatch[1]) {
+          logoHeight = Math.round(thinFrameHeight * 0.65);
+          logoWidth = Math.round(logoHeight * 1.2);
+          logoDisplay = `
+            <image 
+              href="${srcMatch[1]}" 
+              x="15" 
+              y="${middleY - logoHeight / 2}" 
+              width="${logoWidth}" 
+              height="${logoHeight}" 
+              preserveAspectRatio="xMidYMid meet" 
+            />`;
+        }
+      }
+
+      const leftMargin = logoDisplay ? logoWidth + 25 : 20;
+
+      const verticalShift = 2;
+      const verticalGap = 4;
+
+      const cameraInfoY = middleY - 4 + verticalShift;
+
+      const exposureInfoY = cameraInfoY + verticalGap + smallFontSize * 0.7;
+
+      const estimatedCameraTextWidth = cameraInfo
+        ? cameraInfo.length * (smallFontSize * 0.6)
+        : 0;
+      const photographerX = leftMargin + estimatedCameraTextWidth + 10;
+
+      const cameraInfoElement = `
+        <text 
+          x="${leftMargin}" 
+          y="${cameraInfoY}" 
+          font-family="Arial, sans-serif" 
+          font-size="${smallFontSize}" 
+          font-weight="500" 
+          fill="#333333" 
+          dominant-baseline="middle"
+        >${cameraInfo || ""}</text>
+      `;
+
+      const photographerElement = photographerName
+        ? `
+        <text 
+          x="${photographerX}" 
+          y="${cameraInfoY}" 
+          font-family="Arial, sans-serif" 
+          font-size="${smallFontSize * 0.7}" 
+          font-weight="300" 
+          fill="#777777" 
+          dominant-baseline="middle"
+        >by ${photographerName}</text>
+      `
+        : "";
+
+      const exposureInfoElement = exposureInfo
+        ? `
+        <text 
+          x="${leftMargin}" 
+          y="${exposureInfoY}" 
+          font-family="Arial, sans-serif" 
+          font-size="${smallFontSize * 0.7}" 
+          font-weight="300" 
+          fill="#777777" 
+          dominant-baseline="middle"
+        >${exposureInfo}</text>
+      `
+        : "";
+
+      return `
+      <svg width="${imageWidth}" height="${thinFrameHeight}" xmlns="http://www.w3.org/2000/svg">
+        <rect width="${imageWidth}" height="${thinFrameHeight}" fill="#FFFFFF"/>
+        
+        ${logoDisplay || ""}
+        
+        ${cameraInfoElement}
+        
+        ${photographerElement}
+        
+        ${exposureInfoElement}
       </svg>`;
     },
   },
 };
 
-// Get a list of all available designs
 function getDesignList() {
   return Object.values(designs).map((design) => ({
     id: design.id,
@@ -597,9 +774,8 @@ function getDesignList() {
   }));
 }
 
-// Get a specific design by ID
 function getDesignById(id) {
-  return designs[id] || designs.classic; // Default to classic if not found
+  return designs[id] || designs.classic;
 }
 
 module.exports = {

@@ -119,25 +119,19 @@ async function createPremiumWatermark(
 
     let brandLogo = "";
     try {
-      // Get the list of available model logos
       const logoDir = path.join(__dirname, "assets/models");
       const availableLogos = fs
         .readdirSync(logoDir)
         .filter((file) => file.endsWith(".png"))
         .map((file) => file.toLowerCase());
 
-      // Normalize and split camera make into individual words
       const makeWords = cameraMake.toLowerCase().trim().split(/\s+/);
 
-      // Find a matching logo by checking each word in the camera make
       let logoFileName = null;
       for (const word of makeWords) {
-        // Skip very short words (like "co", "inc", etc.)
         if (word.length <= 2) continue;
 
-        // Check if any logo filename contains this word
         const matchingLogo = availableLogos.find((logo) => {
-          // Remove .png and compare with the current word
           const logoName = logo.replace(".png", "");
           return (
             logoName === word ||
@@ -176,13 +170,15 @@ async function createPremiumWatermark(
 
     const selectedDesign = getDesignById(designId);
 
+    const isMicroDesign = designId === "micro";
+
     if (isPortrait) {
       const centerX = imageWidth / 2;
 
       const logoHeight = Math.round(frameHeight * 0.5);
       const logoWidth = logoHeight * 1.5;
 
-      const logoY = frameHeight * 0.8 - logoHeight / 2; // Changed from 0.875 to 0.7
+      const logoY = frameHeight * 0.8 - logoHeight / 2;
       const logoX = centerX - logoWidth / 2;
 
       const logoElement = brandLogo
@@ -206,11 +202,15 @@ async function createPremiumWatermark(
 
       const watermarkBuffer = Buffer.from(watermarkSvg);
 
+      const finalFrameHeight = isMicroDesign
+        ? Math.round(frameHeight * 0.5)
+        : frameHeight * 2;
+
       return sharp(processedMetadata.data)
         .withMetadata()
         .extend({
           top: 0,
-          bottom: frameHeight * 2,
+          bottom: finalFrameHeight,
           left: 0,
           right: 0,
           background: { r: 255, g: 255, b: 255, alpha: 1 },
@@ -286,11 +286,15 @@ async function createPremiumWatermark(
 
       const watermarkBuffer = Buffer.from(watermarkSvg);
 
+      const finalFrameHeight = isMicroDesign
+        ? Math.round(frameHeight * 0.5)
+        : frameHeight;
+
       return sharp(processedMetadata.data)
         .withMetadata()
         .extend({
           top: 0,
-          bottom: frameHeight,
+          bottom: finalFrameHeight,
           left: 0,
           right: 0,
           background: { r: 255, g: 255, b: 255, alpha: 1 },
