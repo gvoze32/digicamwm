@@ -437,3 +437,66 @@ input[type="text"]::placeholder {
 .photographer-input-container {
   display: none;
 }
+
+/* Donation button styles */
+.donate-button {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  padding: 5px 12px;
+  background-color: transparent;
+  color: #4CAF50;
+  border: 1.5px solid #4CAF50;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.donate-button:before {
+  content: "♥ ";
+  font-size: 1.1em;
+  margin-right: 4px;
+  color: #f55b6a;
+}
+
+.donate-button:hover {
+  background-color: rgba(91, 106, 245, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.qr-tooltip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  width: 150px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-tooltip img {
+  width: 100%;
+  height: auto;
+}
+
+.qr-tooltip span {
+  margin-top: 8px;
+  color: #333;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.donate-button:hover .qr-tooltip {
+  display: flex;
+}
