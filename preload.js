@@ -11,9 +11,14 @@ contextBridge.exposeInMainWorld("api", {
   onImageProcessed: (callback) => {
     ipcRenderer.on("image-processed", (event, data) => callback(data));
   },
+  onUpdateAvailable: (callback) => {
+    ipcRenderer.on("update-available", (event, data) => callback(data));
+  },
+  openExternalUrl: (url) => ipcRenderer.invoke("open-external-url", url),
   removeAllListeners: () => {
     ipcRenderer.removeAllListeners("process-status");
     ipcRenderer.removeAllListeners("image-processed");
+    ipcRenderer.removeAllListeners("update-available");
   },
   // New methods for design selection
   getDesigns: () => ipcRenderer.invoke("get-designs"),

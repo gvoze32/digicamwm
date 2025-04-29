@@ -14,6 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentFile = document.getElementById("current-file");
   const designSelector = document.getElementById("design-selector");
 
+  // Update notification elements
+  const updateNotification = document.getElementById("update-notification");
+  const updateVersion = document.getElementById("update-version");
+  const updateNotes = document.getElementById("update-notes");
+  const closeUpdateBtn = document.getElementById("close-update-notification");
+  const downloadUpdateBtn = document.getElementById("download-update");
+  const remindLaterBtn = document.getElementById("remind-later");
+
+  let currentReleaseUrl = "";
   let processing = false;
   let inputDir = "";
   let outputDir = "";
@@ -44,6 +53,36 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkStartEnabled() {
     startButton.disabled = !(inputDir && outputDir && !processing);
   }
+
+  // Handle update events
+  window.api.onUpdateAvailable((data) => {
+    updateVersion.textContent = data.version;
+    updateNotes.textContent =
+      data.releaseNotes?.slice(0, 300) || "Improvements and bug fixes.";
+    if (data.releaseNotes?.length > 300) {
+      updateNotes.textContent += "...";
+    }
+    currentReleaseUrl = data.releaseUrl;
+    updateNotification.classList.remove("hidden");
+  });
+
+  // Close update notification
+  closeUpdateBtn.addEventListener("click", () => {
+    updateNotification.classList.add("hidden");
+  });
+
+  // Remind later button
+  remindLaterBtn.addEventListener("click", () => {
+    updateNotification.classList.add("hidden");
+  });
+
+  // Download update button
+  downloadUpdateBtn.addEventListener("click", async () => {
+    if (currentReleaseUrl) {
+      await window.api.openExternalUrl(currentReleaseUrl);
+      updateNotification.classList.add("hidden");
+    }
+  });
 
   // Load available designs
   async function loadDesigns() {

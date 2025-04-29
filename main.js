@@ -1,6 +1,7 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const https = require("https");
 const { addWatermarkFrame, processBulkImages } = require("./index");
 const { getDesignList, getDesignById, defaultDesign } = require("./designs");
 
@@ -20,6 +21,81 @@ function createWindow() {
   });
 
   mainWindow.loadFile("index.html");
+
+  // Check for updates after window is created
+  checkForUpdates();
+}
+
+function checkForUpdates() {
+  const currentVersion = app.getVersion();
+  const options = {
+    hostname: "api.github.com",
+    path: "/repos/gvoze32/digicamwm/releases/latest",
+    method: "GET",
+    headers: {
+      "User-Agent": "DigiCamWM Update Checker",
+    },
+  };
+
+  const req = https.request(options, (res) => {
+    let data = "";
+
+    res.on("data", (chunk) => {
+      data += chunk;
+    });
+
+    res.on("end", () => {
+      try {
+        const release = JSON.parse(data);
+        // Strip the 'v' prefix if it exists
+        const latestVersion = release.tag_name.replace(/^v/, "");
+
+        console.log(
+          `Current version: ${currentVersion}, Latest version: ${latestVersion}`
+        );
+
+        // Compare versions
+        if (isNewerVersion(latestVersion, currentVersion)) {
+          mainWindow.webContents.send("update-available", {
+            version: latestVersion,
+            releaseUrl: release.html_url,
+            releaseNotes: release.body,
+          });
+        }
+      } catch (error) {
+        console.error("Error checking for updates:", error);
+      }
+    });
+  });
+
+  req.on("error", (error) => {
+    console.error("Error checking for updates:", error);
+  });
+
+  req.end();
+
+  // Check for updates every 6 hours
+  setTimeout(checkForUpdates, 6 * 60 * 60 * 1000);
+}
+
+// Version comparison helper (returns true if latestVersion > currentVersion)
+function isNewerVersion(latestVersion, currentVersion) {
+  const latest = latestVersion.split(".").map(Number);
+  const current = currentVersion.split(".").map(Number);
+
+  for (let i = 0; i < Math.max(latest.length, current.length); i++) {
+    const latestPart = latest[i] || 0;
+    const currentPart = current[i] || 0;
+
+    if (latestPart > currentPart) {
+      return true;
+    }
+    if (latestPart < currentPart) {
+      return false;
+    }
+  }
+
+  return false; // Versions are equal
 }
 
 app.whenReady().then(() => {
@@ -44,6 +120,12 @@ ipcMain.handle("select-folder", async (event, purpose) => {
   } else {
     return result.filePaths[0];
   }
+});
+
+// Handle opening external URLs (for update download)
+ipcMain.handle("open-external-url", async (event, url) => {
+  await shell.openExternal(url);
+  return { success: true };
 });
 
 ipcMain.handle("get-designs", async () => {
