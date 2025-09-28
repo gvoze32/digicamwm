@@ -50,16 +50,11 @@ function checkForUpdates() {
         // Strip the 'v' prefix if it exists
         const latestVersion = release.tag_name.replace(/^v/, "");
 
-        console.log(
-          `Current version: ${currentVersion}, Latest version: ${latestVersion}`
-        );
-
         // Compare versions
         if (isNewerVersion(latestVersion, currentVersion)) {
           mainWindow.webContents.send("update-available", {
             version: latestVersion,
             releaseUrl: release.html_url,
-            releaseNotes: release.body,
           });
         }
       } catch (error) {

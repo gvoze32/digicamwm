@@ -17,10 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Update notification elements
   const updateNotification = document.getElementById("update-notification");
   const updateVersion = document.getElementById("update-version");
-  const updateNotes = document.getElementById("update-notes");
   const closeUpdateBtn = document.getElementById("close-update-notification");
   const downloadUpdateBtn = document.getElementById("download-update");
-  const remindLaterBtn = document.getElementById("remind-later");
 
   let currentReleaseUrl = "";
   let processing = false;
@@ -57,22 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle update events
   window.api.onUpdateAvailable((data) => {
     updateVersion.textContent = data.version;
-    updateNotes.textContent =
-      data.releaseNotes?.slice(0, 300) || "Improvements and bug fixes.";
-    if (data.releaseNotes?.length > 300) {
-      updateNotes.textContent += "...";
-    }
     currentReleaseUrl = data.releaseUrl;
     updateNotification.classList.remove("hidden");
   });
 
   // Close update notification
   closeUpdateBtn.addEventListener("click", () => {
-    updateNotification.classList.add("hidden");
-  });
-
-  // Remind later button
-  remindLaterBtn.addEventListener("click", () => {
     updateNotification.classList.add("hidden");
   });
 
