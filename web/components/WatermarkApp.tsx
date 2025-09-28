@@ -222,7 +222,7 @@ export default function WatermarkApp(): JSX.Element {
                   }}
                 >
                   <img src={design.thumbnails.landscape} alt={`${design.name} landscape preview`} />
-                  <div>
+                  <div className="design-card-details">
                     <h4>{design.name}</h4>
                     <p>{design.description}</p>
                   </div>

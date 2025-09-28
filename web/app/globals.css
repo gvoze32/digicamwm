@@ -351,6 +351,7 @@ button.primary-outline:hover {
   gap: 10px;
   transition: border-color 0.2s ease, transform 0.2s ease;
   cursor: pointer;
+  height: 100%;
 }
 
 .design-card.active {
@@ -384,11 +385,19 @@ button.primary-outline:hover {
   color: #4b5563;
 }
 
+.design-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+}
+
 .design-sample-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 .design-sample-actions button {
