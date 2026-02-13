@@ -45,7 +45,7 @@ interface DesignDefinition {
   renderLandscape: (params: LandscapeRenderParams) => string;
 }
 
-const { getDesignById, defaultDesign } = require("../../designs.js") as {
+const { getDesignById, defaultDesign } = require("../designs.js") as {
   getDesignById: (id: string) => DesignDefinition;
   defaultDesign: string;
 };
@@ -171,7 +171,7 @@ async function composeWatermark(
     exposureInfo: string;
     timestamp: string;
     brandLogo: string | null;
-  }
+  },
 ): Promise<Buffer> {
   const { info } = processedData;
   const imageWidth = info.width;

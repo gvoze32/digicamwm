@@ -5,7 +5,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gvoze32/digicamwm)
 ![License](https://img.shields.io/github/license/gvoze32/digicamwm)
 
-Alat watermark kamera digital yang kuat untuk menambahkan bingkai profesional dengan informasi kamera pada foto Anda.
+Alat watermark kamera digital yang kuat untuk menambahkan bingkai profesional dengan informasi kamera pada foto Anda. Dibangun dengan [Tauri v2](https://tauri.app/) dan Rust untuk performa native di desktop dan mobile.
 
 ![Screenshot DigiCamWM](assets/thumbnails/screenshot.jpeg)
 
@@ -16,7 +16,8 @@ Alat watermark kamera digital yang kuat untuk menambahkan bingkai profesional de
 - 🏞️ Mendukung orientasi potret dan landscape
 - 🚀 Kemampuan pemrosesan batch
 - 🎨 UI yang bersih dan minimal yang mudah digunakan
-- 💻 Lintas platform (Windows, macOS, Linux)
+- 💻 Lintas platform (Windows, macOS, Linux, Android, iOS)
+- ⚡ Backend Rust native untuk pemrosesan gambar cepat
 
 ## Instalasi
 
@@ -26,9 +27,11 @@ Unduh versi terbaru dari [halaman Releases](https://github.com/gvoze32/digicamwm
 
 ### Platform yang Didukung
 
-- **Windows**: Unduh installer `.exe`
-- **macOS**: Unduh file `.dmg`
-- **Linux**: Unduh file `.AppImage`
+- **Windows**: Unduh installer `.exe` (NSIS) atau `.msi`
+- **macOS**: Unduh file `.dmg` (Apple Silicon & Intel)
+- **Linux**: Unduh file `.AppImage`, `.deb`, atau `.rpm`
+- **Android**: Unduh file `.apk`
+- **iOS**: Build dari source dengan Xcode
 
 ### Mengatasi Masalah Instalasi
 
@@ -52,21 +55,14 @@ Ini menghapus tanda karantina yang diterapkan macOS pada aplikasi yang diunduh d
 4. Klik "Start Processing"
 5. Lihat hasilnya di folder output
 
-### Command Line Interface
-
-DigiCamWM juga menawarkan antarmuka command line:
-
-```bash
-# Penggunaan dasar
-node index.js --raw /path/to/input --processed /path/to/output
-```
-
 ## Pengembangan
 
 ### Prasyarat
 
-- [Node.js](https://nodejs.org/) (v14 atau lebih baru)
-- [npm](https://www.npmjs.com/) (v6 atau lebih baru)
+- [Node.js](https://nodejs.org/) (v18 atau lebih baru)
+- [npm](https://www.npmjs.com/) (v9 atau lebih baru)
+- [Rust](https://www.rust-lang.org/tools/install) (via rustup)
+- Dependensi spesifik platform (lihat [prasyarat Tauri](https://tauri.app/start/prerequisites/))
 
 ### Setup
 
@@ -82,7 +78,14 @@ npm install
 ### Menjalankan dalam Mode Pengembangan
 
 ```bash
+# Desktop
 npm run dev
+
+# Android
+npx tauri android dev
+
+# iOS
+npx tauri ios dev
 ```
 
 ### Build dari Source
@@ -91,7 +94,11 @@ npm run dev
 # Build untuk platform Anda saat ini
 npm run build
 
-# Aplikasi yang dikemas akan berada di folder 'dist'
+# Build untuk Android
+npx tauri android build
+
+# Build untuk iOS
+npx tauri ios build
 ```
 
 ## Dukungan Logo Brand Kamera
@@ -106,9 +113,12 @@ Contoh:
 
 ## Teknologi
 
-- [Electron](https://www.electronjs.org/) - Framework aplikasi desktop lintas platform
-- [Sharp](https://sharp.pixelplumbing.com/) - Pemrosesan gambar berkinerja tinggi
-- [exif-parser](https://www.npmjs.com/package/exif-parser) - Ekstraksi metadata EXIF
+- [Tauri v2](https://tauri.app/) - Framework aplikasi lintas platform (desktop & mobile)
+- [Rust](https://www.rust-lang.org/) - Backend untuk pemrosesan gambar
+- [Vite](https://vitejs.dev/) - Build tool frontend
+- [image](https://crates.io/crates/image) - Pemrosesan gambar Rust
+- [kamadak-exif](https://crates.io/crates/kamadak-exif) - Ekstraksi metadata EXIF
+- [resvg](https://crates.io/crates/resvg) - Rendering SVG
 
 ## Kontribusi
 

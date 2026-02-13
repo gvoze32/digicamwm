@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const { getDesignList, defaultDesign } = require("../../../../designs.js") as {
+const { getDesignList, defaultDesign } = require("../../../designs.js") as {
   getDesignList: () => Array<{
     id: string;
     name: string;

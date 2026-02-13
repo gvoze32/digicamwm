@@ -5,7 +5,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/gvoze32/digicamwm)
 ![License](https://img.shields.io/github/license/gvoze32/digicamwm)
 
-A powerful digital camera watermarking tool that adds professional-looking frames with camera information to your photos.
+A powerful digital camera watermarking tool that adds professional-looking frames with camera information to your photos. Built with [Tauri v2](https://tauri.app/) and Rust for native performance on desktop and mobile.
 
 ![Screenshot of DigiCamWM](assets/thumbnails/screenshot.jpeg)
 
@@ -16,7 +16,8 @@ A powerful digital camera watermarking tool that adds professional-looking frame
 - 🏞️ Supports both portrait and landscape orientations
 - 🚀 Batch processing capabilities
 - 🎨 Clean, minimal UI that's easy to use
-- 💻 Cross-platform (Windows, macOS, Linux)
+- 💻 Cross-platform (Windows, macOS, Linux, Android, iOS)
+- ⚡ Native Rust backend for fast image processing
 
 ## Installation
 
@@ -26,9 +27,11 @@ Download the latest version from the [Releases page](https://github.com/gvoze32/
 
 ### Supported Platforms
 
-- **Windows**: Download the `.exe` installer
-- **macOS**: Download the `.dmg` file
-- **Linux**: Download the `.AppImage` file
+- **Windows**: Download the `.exe` (NSIS) or `.msi` installer
+- **macOS**: Download the `.dmg` file (Apple Silicon & Intel)
+- **Linux**: Download the `.AppImage`, `.deb`, or `.rpm` package
+- **Android**: Download the `.apk` file
+- **iOS**: Build from source with Xcode
 
 ### Troubleshooting Installation
 
@@ -52,21 +55,14 @@ This removes the quarantine flag that macOS applies to applications downloaded f
 4. Click "Start Processing"
 5. View the results in your output folder
 
-### Command Line Interface
-
-DigiCamWM also offers a command line interface:
-
-```bash
-# Basic usage
-node index.js --raw /path/to/input --processed /path/to/output
-```
-
 ## Development
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v14 or newer)
-- [npm](https://www.npmjs.com/) (v6 or newer)
+- [Node.js](https://nodejs.org/) (v18 or newer)
+- [npm](https://www.npmjs.com/) (v9 or newer)
+- [Rust](https://www.rust-lang.org/tools/install) (via rustup)
+- Platform-specific dependencies (see [Tauri prerequisites](https://tauri.app/start/prerequisites/))
 
 ### Setup
 
@@ -82,7 +78,14 @@ npm install
 ### Running in Development Mode
 
 ```bash
+# Desktop
 npm run dev
+
+# Android
+npx tauri android dev
+
+# iOS
+npx tauri ios dev
 ```
 
 ### Building from Source
@@ -91,7 +94,11 @@ npm run dev
 # Build for your current platform
 npm run build
 
-# The packaged application will be in the 'dist' folder
+# Build for Android
+npx tauri android build
+
+# Build for iOS
+npx tauri ios build
 ```
 
 ## Camera Brand Logo Support
@@ -106,9 +113,12 @@ For example:
 
 ## Technologies
 
-- [Electron](https://www.electronjs.org/) - Cross-platform desktop app framework
-- [Sharp](https://sharp.pixelplumbing.com/) - High-performance image processing
-- [exif-parser](https://www.npmjs.com/package/exif-parser) - EXIF metadata extraction
+- [Tauri v2](https://tauri.app/) - Cross-platform app framework (desktop & mobile)
+- [Rust](https://www.rust-lang.org/) - Backend for image processing
+- [Vite](https://vitejs.dev/) - Frontend build tool
+- [image](https://crates.io/crates/image) - Rust image processing
+- [kamadak-exif](https://crates.io/crates/kamadak-exif) - EXIF metadata extraction
+- [resvg](https://crates.io/crates/resvg) - SVG rendering
 
 ## Contributing
 
