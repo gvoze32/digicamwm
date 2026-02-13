@@ -1,4 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
+import { invoke, convertFileSrc } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
+import { open } from "@tauri-apps/plugin-dialog";
+import { openUrl } from "@tauri-apps/plugin-opener";
+
+document.addEventListener("DOMContentLoaded", async () => {
   // Get elements
   const inputFolderInput = document.getElementById("input-folder");
   const outputFolderInput = document.getElementById("output-folder");
@@ -27,9 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let designs = [];
   let currentDesign = null;
 
+  // Store unlisten functions for cleanup
+  const unlisteners = [];
+
   // Browse input folder
   browseInputBtn.addEventListener("click", async () => {
-    const folder = await window.api.selectFolder("input");
+    const folder = await open({ directory: true, multiple: false });
     if (folder) {
       inputDir = folder;
       inputFolderInput.value = folder;
@@ -39,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Browse output folder
   browseOutputBtn.addEventListener("click", async () => {
-    const folder = await window.api.selectFolder("output");
+    const folder = await open({ directory: true, multiple: false });
     if (folder) {
       outputDir = folder;
       outputFolderInput.value = folder;
@@ -53,11 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Handle update events
-  window.api.onUpdateAvailable((data) => {
+  const unlistenUpdate = await listen("update-available", (event) => {
+    const data = event.payload;
     updateVersion.textContent = data.version;
     currentReleaseUrl = data.releaseUrl;
     updateNotification.classList.remove("hidden");
   });
+  unlisteners.push(unlistenUpdate);
 
   // Close update notification
   closeUpdateBtn.addEventListener("click", () => {
@@ -67,17 +77,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Download update button
   downloadUpdateBtn.addEventListener("click", async () => {
     if (currentReleaseUrl) {
-      await window.api.openExternalUrl(currentReleaseUrl);
+      await openUrl(currentReleaseUrl);
       updateNotification.classList.add("hidden");
     }
   });
 
   // Load available designs
   async function loadDesigns() {
-    designs = await window.api.getDesigns();
-    const currentDesignInfo = await window.api.getCurrentDesign();
+    designs = await invoke("get_designs");
+    const currentDesignInfo = await invoke("get_current_design");
 
-    // Store only the ID since the full design object can't be cloned
     currentDesign = currentDesignInfo.id;
 
     // Populate design selector
@@ -92,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Select current design
     designSelector.value = currentDesignInfo.id;
 
-    // Update the design preview to show the current design
+    // Update the design preview
     updateDesignPreview(currentDesignInfo.id);
   }
 
@@ -104,16 +113,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const designName = document.getElementById("design-name");
     const designDescription = document.getElementById("design-description");
     const landscapeThumbnail = document.getElementById(
-      "design-thumbnail-landscape"
+      "design-thumbnail-landscape",
     );
     const portraitThumbnail = document.getElementById(
-      "design-thumbnail-portrait"
+      "design-thumbnail-portrait",
     );
 
     designName.textContent = design.name;
     designDescription.textContent = design.description;
 
-    // Update the thumbnail images - use the correct jpg file extension
     const landscapeImagePath = `assets/designs/${design.id}-landscape.jpg`;
     const portraitImagePath = `assets/designs/${design.id}-portrait.jpg`;
 
@@ -132,47 +140,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalCaption = document.getElementById("modal-caption");
   const closeModal = document.querySelector(".close-modal");
 
-  // Set up thumbnails for modal preview
   function setupThumbnailClickHandlers() {
     const thumbnails = document.querySelectorAll(".design-thumbnail");
     thumbnails.forEach((thumbnail) => {
       thumbnail.addEventListener("click", function () {
-        modal.style.display = "flex"; // Use flex to center content
+        modal.style.display = "flex";
         enlargedImage.src = this.getAttribute("data-fullsize");
         modalCaption.textContent = this.alt || "Design preview";
-
-        // Disable scrolling on body when modal is open
         document.body.style.overflow = "hidden";
-
-        // Add ESC key listener to close modal
         document.addEventListener("keydown", handleEscKey);
       });
     });
   }
 
-  // Close modal when ESC key is pressed
   function handleEscKey(e) {
     if (e.key === "Escape") {
       closeModalFunc();
     }
   }
 
-  // Function to close modal
   function closeModalFunc() {
     modal.style.display = "none";
-    document.body.style.overflow = "auto"; // Re-enable scrolling
+    document.body.style.overflow = "auto";
     document.removeEventListener("keydown", handleEscKey);
   }
 
-  // Run setup after designs are loaded
-  loadDesigns().then(() => {
-    setupThumbnailClickHandlers();
-  });
+  // Load designs and setup
+  await loadDesigns();
+  setupThumbnailClickHandlers();
 
-  // Close modal when clicking the X
   closeModal.addEventListener("click", closeModalFunc);
-
-  // Close modal when clicking outside the image
   modal.addEventListener("click", function (event) {
     if (event.target === modal) {
       closeModalFunc();
@@ -182,16 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle design selection change
   designSelector.addEventListener("change", async () => {
     const selectedDesignId = designSelector.value;
-    await window.api.setDesign(selectedDesignId);
-    // Only store the ID
+    await invoke("set_design", { designId: selectedDesignId });
     currentDesign = selectedDesignId;
-
-    // Update the preview with the selected design
     updateDesignPreview(selectedDesignId);
   });
-
-  // Initialize designs
-  loadDesigns();
 
   // Start processing
   startButton.addEventListener("click", async () => {
@@ -206,11 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
     progressText.textContent = "Starting...";
     progressCount.textContent = "0/0";
 
-    // Get the photographer name
     const photographerName = photographerNameInput.value.trim();
 
-    // Start processing with current design
-    const result = await window.api.startProcessing({
+    const result = await invoke("start_processing", {
       inputDir: inputDir,
       outputDir: outputDir,
       photographerName: photographerName,
@@ -222,19 +211,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Handle process status updates
-  window.api.onProcessStatus((data) => {
+  const unlistenStatus = await listen("process-status", (event) => {
+    const data = event.payload;
     switch (data.type) {
       case "start":
         progressText.textContent = `Processing ${data.total} images...`;
         progressCount.textContent = `0/${data.total}`;
         break;
 
-      case "progress":
+      case "progress": {
         const percent = (data.current / data.total) * 100;
         progressBar.style.width = `${percent}%`;
         progressText.textContent = `Processing ${data.currentFile}...`;
         progressCount.textContent = `${data.current}/${data.total}`;
         break;
+      }
 
       case "complete":
         progressText.textContent = "Processing complete!";
@@ -244,22 +235,23 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
     }
   });
+  unlisteners.push(unlistenStatus);
 
   // Handle image preview updates
-  window.api.onImageProcessed((data) => {
-    if (data.success) {
-      // Update the preview with the latest processed image
-      // We use a query parameter to force reload even if the path is the same
-      const timestamp = new Date().getTime();
-      previewImage.src = `file://${data.path}?t=${timestamp}`;
+  const unlistenImage = await listen("image-processed", (event) => {
+    const data = event.payload;
+    if (data.success && data.path) {
+      const assetUrl = convertFileSrc(data.path);
+      previewImage.src = assetUrl;
       currentFile.textContent = data.file;
     } else {
       console.error(`Error processing ${data.file}: ${data.error}`);
     }
   });
+  unlisteners.push(unlistenImage);
 
   // Clean up event listeners when window is closed
   window.addEventListener("beforeunload", () => {
-    window.api.removeAllListeners();
+    unlisteners.forEach((unlisten) => unlisten());
   });
 });
