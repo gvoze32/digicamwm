@@ -178,9 +178,9 @@ jobs:
           PROFILE_PATH=$RUNNER_TEMP/build_profile.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-          # Decode certificate and profile using printf to avoid newline issues
-          printf '%s' "$APPLE_CERTIFICATE" | base64 -D -o $CERTIFICATE_PATH
-          printf '%s' "$APPLE_PROVISIONING_PROFILE" | base64 -D -o $PROFILE_PATH
+          # Decode certificate and profile using redirection (macOS base64 has no -o flag)
+          printf '%s' "$APPLE_CERTIFICATE" | base64 -D > $CERTIFICATE_PATH
+          printf '%s' "$APPLE_PROVISIONING_PROFILE" | base64 -D > $PROFILE_PATH
 
           # Verify files were created and are non-empty
           if [ ! -s "$CERTIFICATE_PATH" ]; then
