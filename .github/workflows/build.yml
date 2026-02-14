@@ -167,17 +167,73 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Disable iOS Code Signing for CI
+      - name: Install Apple certificate and provisioning profile
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+          KEYCHAIN_PASSWORD: ${{ github.run_id }}
         run: |
-          sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer"/CODE_SIGN_IDENTITY = ""/g' gen/apple/digicamwm.xcodeproj/project.pbxproj
-          sed -i '' '/CODE_SIGN_IDENTITY/a\
-          \t\t\t\tCODE_SIGNING_ALLOWED = NO;
-          ' gen/apple/digicamwm.xcodeproj/project.pbxproj
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PROFILE_PATH=$RUNNER_TEMP/build_profile.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          echo -n "$APPLE_CERTIFICATE" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$APPLE_PROVISIONING_PROFILE" | base64 --decode -o $PROFILE_PATH
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          security import $CERTIFICATE_PATH -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PROFILE_PATH ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      - name: Set signing team in Xcode project
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          sed -i '' "s/CODE_SIGN_IDENTITY = \"iPhone Developer\"/CODE_SIGN_IDENTITY = \"iPhone Distribution\"/g" gen/apple/digicamwm.xcodeproj/project.pbxproj
+
+          # Add DEVELOPMENT_TEAM to both build configurations
+          sed -i '' "/CODE_SIGN_IDENTITY/a\\
+          \\t\\t\\t\\tDEVELOPMENT_TEAM = $APPLE_TEAM_ID;
+          " gen/apple/digicamwm.xcodeproj/project.pbxproj
+
+      - name: Update ExportOptions
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          cat > gen/apple/ExportOptions.plist << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>development</string>
+              <key>teamID</key>
+              <string>$APPLE_TEAM_ID</string>
+              <key>signingStyle</key>
+              <string>automatic</string>
+              <key>stripSwiftSymbols</key>
+              <true/>
+              <key>compileBitcode</key>
+              <false/>
+          </dict>
+          </plist>
+          EOF
 
       - name: Build iOS
-        run: npx tauri ios build --export-method debugging
+        run: npx tauri ios build --export-method development
         env:
           TAURI_DIR: .
+
+      - name: Clean up keychain
+        if: always()
+        run: security delete-keychain $RUNNER_TEMP/app-signing.keychain-db 2>/dev/null || true
 
       - name: Upload iOS artifacts
         uses: actions/upload-artifact@v4
