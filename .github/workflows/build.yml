@@ -171,8 +171,8 @@ jobs:
         run: |
           sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer"/CODE_SIGN_IDENTITY = ""/g' gen/apple/digicamwm.xcodeproj/project.pbxproj
           sed -i '' '/CODE_SIGN_IDENTITY/a\
-\t\t\t\tCODE_SIGNING_ALLOWED = NO;
-' gen/apple/digicamwm.xcodeproj/project.pbxproj
+          \t\t\t\tCODE_SIGNING_ALLOWED = NO;
+          ' gen/apple/digicamwm.xcodeproj/project.pbxproj
 
       - name: Build iOS
         run: npx tauri ios build --export-method debugging
