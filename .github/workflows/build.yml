@@ -178,8 +178,15 @@ jobs:
           PROFILE_PATH=$RUNNER_TEMP/build_profile.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-          echo -n "$APPLE_CERTIFICATE" | base64 --decode -o $CERTIFICATE_PATH
-          echo -n "$APPLE_PROVISIONING_PROFILE" | base64 --decode -o $PROFILE_PATH
+          # Decode certificate and profile using printf to avoid newline issues
+          printf '%s' "$APPLE_CERTIFICATE" | base64 -D -o $CERTIFICATE_PATH
+          printf '%s' "$APPLE_PROVISIONING_PROFILE" | base64 -D -o $PROFILE_PATH
+
+          # Verify files were created and are non-empty
+          if [ ! -s "$CERTIFICATE_PATH" ]; then
+            echo "Error: Certificate file is empty or missing"
+            exit 1
+          fi
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
