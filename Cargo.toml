@@ -1,6 +1,6 @@
 [package]
 name = "digicamwm"
-version = "1.0.7"
+version = "1.0.8"
 description = "Digital Camera Watermarking Tool"
 authors = ["gvoze32"]
 license = "ISC"

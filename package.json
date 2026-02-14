@@ -1,10 +1,11 @@
 {
   "name": "digicamwm",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Digital Camera Watermarking Tool",
   "scripts": {
     "vite:dev": "vite dev",
     "vite:build": "vite build",
+    "sync-version": "node scripts/sync-version.js",
     "tauri": "tauri",
     "dev": "TAURI_DIR=. tauri dev",
     "build": "TAURI_DIR=. tauri build"

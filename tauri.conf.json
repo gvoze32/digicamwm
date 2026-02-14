@@ -1,13 +1,13 @@
 {
   "$schema": "node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "DigiCamWM",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "identifier": "com.digicamwm.app",
   "build": {
     "frontendDist": "./dist",
     "devUrl": "http://localhost:1420",
-    "beforeDevCommand": "npm run vite:dev",
-    "beforeBuildCommand": "npm run vite:build"
+    "beforeDevCommand": "npm run sync-version && npm run vite:dev",
+    "beforeBuildCommand": "npm run sync-version && npm run vite:build"
   },
   "app": {
     "windows": [

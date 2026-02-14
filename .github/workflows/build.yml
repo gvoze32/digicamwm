@@ -69,7 +69,8 @@ jobs:
             libgtk-3-dev \
             libsoup-3.0-dev \
             libjavascriptcoregtk-4.1-dev \
-            patchelf
+            patchelf \
+            xdg-utils
 
       - name: Build Tauri App
         uses: tauri-apps/tauri-action@v0
@@ -165,6 +166,13 @@ jobs:
 
       - name: Install npm dependencies
         run: npm ci
+
+      - name: Disable iOS Code Signing for CI
+        run: |
+          sed -i '' 's/CODE_SIGN_IDENTITY = "iPhone Developer"/CODE_SIGN_IDENTITY = ""/g' gen/apple/digicamwm.xcodeproj/project.pbxproj
+          sed -i '' '/CODE_SIGN_IDENTITY/a\
+\t\t\t\tCODE_SIGNING_ALLOWED = NO;
+' gen/apple/digicamwm.xcodeproj/project.pbxproj
 
       - name: Build iOS
         run: npx tauri ios build --export-method debugging
