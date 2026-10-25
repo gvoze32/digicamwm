@@ -8,7 +8,7 @@ DigiCamWM adds a frame to your photos showing which camera took them and the set
 
 ## Get it
 
-**Use it in your browser.** Nothing to install: **https://gvoze32.github.io/digicamwm/**
+**Use it in your browser.** Nothing to install: **https://digicamwm.vercel.app**
 Your photos stay on your device and are never uploaded.
 
 **Or download the app** from the [Releases page](https://github.com/gvoze32/digicamwm/releases/latest). The app is better for a whole folder of photos.
@@ -89,6 +89,13 @@ How the code is laid out:
 - `ui/`: the screens (React), used by the app and the browser version.
 
 To add a style, write a function in `crates/core/src/designs/` and add it to the list in `designs/mod.rs`. It then appears in both versions.
+
+## Donate
+
+If DigiCamWM is useful to you:
+
+- [Saweria](https://saweria.co/adena)
+- Crypto (EVM address): `0x98441fC52b473d2E8B246315F96701484e6353CC`
 
 ## License
 

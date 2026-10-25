@@ -158,15 +158,17 @@ button:disabled {
   border-radius: 999px;
   border: 1px solid var(--border);
   font-size: 13px;
+  font-weight: 600;
+  cursor: default;
 }
 
-.donate .qr {
+.donate-menu {
   display: none;
   position: absolute;
   right: 0;
   top: calc(100% + 8px);
   z-index: 10;
-  width: 180px;
+  width: 240px;
   padding: 12px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -178,14 +180,48 @@ button:disabled {
   color: var(--muted);
 }
 
-.donate .qr img {
-  width: 100%;
-  border-radius: 6px;
-  margin-bottom: 6px;
+/* Keeps the menu open while the pointer crosses the gap below the button. */
+.donate-menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
 }
 
-.donate:hover .qr {
+.donate:hover .donate-menu,
+.donate:focus-within .donate-menu {
   display: block;
+}
+
+.donate-menu a {
+  display: block;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.donate-menu img {
+  width: 160px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.donate-crypto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.donate-crypto code {
+  font-size: 11px;
+  color: var(--text);
+  word-break: break-all;
+  user-select: all;
 }
 
 .banner {

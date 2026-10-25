@@ -1,6 +1,6 @@
 import { isTauri } from "@tauri-apps/api/core";
 import { openPath, openUrl } from "@tauri-apps/plugin-opener";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import * as desktop from "./desktop";
 import { previewEngine } from "./engine/engine";
 import type { DesignInfo, PhotoSource } from "./types";
@@ -340,20 +340,52 @@ function Header() {
         </div>
       </div>
       <nav className="links">
-        <a className="donate" href="https://saweria.co/adena" target="_blank" rel="noreferrer">
-          Donate
-          <span className="qr">
-            <img src="donate.png" alt="Donation QR code" />
-            Scan or click to donate
-          </span>
-        </a>
-        <a href="https://github.com/gvoze32/digicamwm" target="_blank" rel="noreferrer" aria-label="GitHub">
+        <Donate />
+        <a href="https://github.com/gvoze32/digicamwm" target="_blank" rel="noreferrer" aria-label="GitHub" onClick={openExternally}>
           <svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden>
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
           </svg>
         </a>
       </nav>
     </header>
+  );
+}
+
+/** Tauri's webview ignores `target="_blank"`; hand links to the system browser instead. */
+function openExternally(e: MouseEvent<HTMLAnchorElement>) {
+  if (!DESKTOP) return;
+  e.preventDefault();
+  openUrl(e.currentTarget.href);
+}
+
+const EVM_ADDRESS = "0x98441fC52b473d2E8B246315F96701484e6353CC";
+
+function Donate() {
+  const [copied, setCopied] = useState(false);
+  return (
+    <div className="donate" tabIndex={0}>
+      Donate
+      <div className="donate-menu">
+        <a href="https://saweria.co/adena" target="_blank" rel="noreferrer" onClick={openExternally}>
+          <img src="donate.png" alt="Saweria QR code" />
+          Saweria (scan or click)
+        </a>
+        <div className="donate-crypto">
+          <span>Crypto (EVM address)</span>
+          <code>{EVM_ADDRESS}</code>
+          <button
+            className="secondary small"
+            onClick={async () => {
+              await navigator.clipboard.writeText(EVM_ADDRESS);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            }}
+          >
+            {copied ? "Copied!" : "Copy address"}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

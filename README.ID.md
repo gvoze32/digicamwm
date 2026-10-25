@@ -8,7 +8,7 @@ DigiCamWM menambahkan bingkai di foto kamu. Bingkainya menampilkan kamera yang d
 
 ## Cara mendapatkan
 
-**Langsung di browser.** Tidak perlu instal apa pun: **https://gvoze32.github.io/digicamwm/**
+**Langsung di browser.** Tidak perlu instal apa pun: **https://digicamwm.vercel.app**
 Foto kamu tetap di perangkatmu sendiri dan tidak di-upload ke mana pun.
 
 **Atau unduh aplikasinya** di [halaman Releases](https://github.com/gvoze32/digicamwm/releases/latest). Aplikasinya lebih enak kalau mau memproses satu folder penuh.
@@ -68,6 +68,13 @@ Setelah itu buka lagi DigiCamWM.
 ## Untuk developer
 
 Lihat bagian [For developers](README.md#for-developers) di README bahasa Inggris.
+
+## Donasi
+
+Kalau DigiCamWM bermanfaat buat kamu:
+
+- [Saweria](https://saweria.co/adena)
+- Kripto (alamat EVM): `0x98441fC52b473d2E8B246315F96701484e6353CC`
 
 ## Lisensi
 
