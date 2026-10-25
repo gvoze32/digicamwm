@@ -202,9 +202,10 @@ button:disabled {
 }
 
 .donate-menu img {
+  display: block;
   width: 160px;
   border-radius: 6px;
-  margin-bottom: 4px;
+  margin: 0 auto 4px;
 }
 
 .donate-crypto {
