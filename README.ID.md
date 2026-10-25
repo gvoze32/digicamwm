@@ -2,128 +2,73 @@
 
 [🇬🇧 English](README.md) | 🇮🇩 Bahasa Indonesia
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/gvoze32/digicamwm)
-![License](https://img.shields.io/github/license/gvoze32/digicamwm)
+DigiCamWM menambahkan bingkai di foto kamu. Bingkainya menampilkan kamera yang dipakai dan pengaturannya, contohnya `5.7mm f/1.5 1/121s ISO 125`, plus tanggal dan nama kamu.
 
-Alat watermark kamera digital yang kuat untuk menambahkan bingkai profesional dengan informasi kamera pada foto Anda. Dibangun dengan [Tauri v2](https://tauri.app/) dan Rust untuk performa native di desktop dan mobile.
+![DigiCamWM](assets/thumbnails/screenshot.jpeg)
 
-![Screenshot DigiCamWM](assets/thumbnails/screenshot.jpeg)
+## Cara mendapatkan
 
-## Fitur
+**Langsung di browser.** Tidak perlu instal apa pun: **https://gvoze32.github.io/digicamwm/**
+Foto kamu tetap di perangkatmu sendiri dan tidak di-upload ke mana pun.
 
-- 📷 Mengekstrak data EXIF dari foto (model kamera, pengaturan, tanggal/waktu)
-- 🖼️ Menambahkan bingkai watermark profesional dengan info kamera
-- 🏞️ Mendukung orientasi potret dan landscape
-- 🚀 Kemampuan pemrosesan batch
-- 🎨 UI yang bersih dan minimal yang mudah digunakan
-- 💻 Lintas platform (Windows, macOS, Linux, Android, iOS)
-- ⚡ Backend Rust native untuk pemrosesan gambar cepat
+**Atau unduh aplikasinya** di [halaman Releases](https://github.com/gvoze32/digicamwm/releases/latest). Aplikasinya lebih enak kalau mau memproses satu folder penuh.
 
-## Instalasi
+| Perangkat kamu         | Unduh                                              |
+| ---------------------- | -------------------------------------------------- |
+| Windows                | file `.exe`                                        |
+| Mac dengan chip Apple  | file `.dmg` yang namanya ada `aarch64`             |
+| Mac dengan chip Intel  | file `.dmg` yang namanya ada `x64`                 |
+| Linux                  | file `.AppImage` atau `.deb`                       |
+| Android                | file `.apk`                                        |
 
-### Unduh
+## Cara pakai
 
-Unduh versi terbaru dari [halaman Releases](https://github.com/gvoze32/digicamwm/releases).
+1. **Pilih foto.** Di browser, seret fotonya ke kotak atau pilih satu folder. Di aplikasi, pilih folder.
+2. **Pilih gaya.** Pratinjau besar langsung berubah saat kamu klik.
+3. **Ketik nama kamu** kalau mau namamu muncul di bingkai. Boleh dilewati.
+4. **Tekan "Frame".**
+   - Aplikasi: foto baru masuk ke folder `DigiCamWM` di dalam folder fotomu. Tekan "Open folder" untuk melihatnya.
+   - Browser: tekan "Download". Kalau fotonya lebih dari satu, semuanya dijadikan satu file ZIP.
 
-### Platform yang Didukung
+Foto aslimu tidak pernah diubah.
 
-- **Windows**: Unduh installer `.exe` (NSIS) atau `.msi`
-- **macOS**: Unduh file `.dmg` (Apple Silicon & Intel)
-- **Linux**: Unduh file `.AppImage`, `.deb`, atau `.rpm`
-- **Android**: Unduh file `.apk`
-- **iOS**: Build dari source dengan Xcode
+## Pilihan gaya
 
-### Mengatasi Masalah Instalasi
+| Gaya       | Tampilannya                                                    |
+| ---------- | -------------------------------------------------------------- |
+| Classic    | Bar putih di bawah foto, kamera di kiri, logo di kanan         |
+| Dark       | Susunan yang sama dengan bar hitam                             |
+| Minimal    | Satu baris tulisan kecil, tanpa logo                           |
+| Simple     | Logo merek di tengah, nama kamera di bawahnya                  |
+| Micro      | Strip sangat tipis, semua info dalam satu baris                |
+| Vintage    | Kertas lawas dengan huruf mesin tik                            |
+| Polaroid   | Bingkai putih ala foto instan, namamu ditulis besar            |
+| Gallery    | Bingkai lebar seperti foto yang dipajang di museum             |
+| Frosted    | Foto bersudut bulat di atas latar foto yang diburamkan         |
+| Film Strip | Pinggiran film 35mm hitam lengkap dengan lubangnya             |
+| Date Stamp | Tanggal oranye di pojok, seperti kamera saku jadul             |
 
-#### Masalah Keamanan macOS
+## Perlu diketahui
 
-Jika Anda mengalami peringatan keamanan di macOS saat mencoba membuka aplikasi ("DigiCamWM rusak dan tidak dapat dibuka. Anda harus memindahkannya ke Trash."), Anda dapat menggunakan perintah Terminal berikut untuk menghapus atribut karantina:
+- **File yang bisa dipakai:** JPG, PNG, WebP, TIFF, dan HEIC (foto iPhone).
+- **Info kamera tidak muncul?** Info kamera diambil dari file foto itu sendiri. Aplikasi seperti WhatsApp dan Instagram, juga screenshot, biasanya menghapusnya. Kalau begitu, bingkai cuma menampilkan info yang tersisa.
+- **Logo:** Apple, Canon, DJI, Fujifilm, GoPro, Hasselblad, Kodak, Konica Minolta, Leica, Nikon, Olympus, Panasonic, Pentax, Samsung, Sigma, dan Sony muncul dengan logonya. Merek lain ditulis namanya saja.
+- **File hasil:** foto PNG tetap PNG. Format lain disimpan sebagai JPG. File baru tidak membawa data kamera aslinya.
+
+### Di Mac muncul "DigiCamWM is damaged and can't be opened"
+
+Aplikasi ini belum ditandatangani Apple. Buka aplikasi **Terminal**, tempel baris ini, lalu tekan Enter:
 
 ```bash
 xattr -c /Applications/DigiCamWM.app
 ```
 
-Ini menghapus tanda karantina yang diterapkan macOS pada aplikasi yang diunduh dari internet.
+Setelah itu buka lagi DigiCamWM.
 
-## Penggunaan
+## Untuk developer
 
-### Aplikasi GUI
-
-1. Buka aplikasi DigiCamWM
-2. Pilih folder input yang berisi foto
-3. Pilih folder output untuk gambar yang diproses
-4. Klik "Start Processing"
-5. Lihat hasilnya di folder output
-
-## Pengembangan
-
-### Prasyarat
-
-- [Node.js](https://nodejs.org/) (v18 atau lebih baru)
-- [npm](https://www.npmjs.com/) (v9 atau lebih baru)
-- [Rust](https://www.rust-lang.org/tools/install) (via rustup)
-- Dependensi spesifik platform (lihat [prasyarat Tauri](https://tauri.app/start/prerequisites/))
-
-### Setup
-
-```bash
-# Klon repositori
-git clone https://github.com/gvoze32/digicamwm.git
-cd digicamwm
-
-# Install dependensi
-npm install
-```
-
-### Menjalankan dalam Mode Pengembangan
-
-```bash
-# Desktop
-npm run dev
-
-# Android
-npx tauri android dev
-
-# iOS
-npx tauri ios dev
-```
-
-### Build dari Source
-
-```bash
-# Build untuk platform Anda saat ini
-npm run build
-
-# Build untuk Android
-npx tauri android build
-
-# Build untuk iOS
-npx tauri ios build
-```
-
-## Dukungan Logo Brand Kamera
-
-DigiCamWM akan secara otomatis mencari logo brand kamera di folder `assets/models`. File harus diberi nama sesuai dengan produsen kamera (huruf kecil) dengan ekstensi `.png`.
-
-Contoh:
-
-- `assets/models/sony.png`
-- `assets/models/canon.png`
-- `assets/models/nikon.png`
-
-## Teknologi
-
-- [Tauri v2](https://tauri.app/) - Framework aplikasi lintas platform (desktop & mobile)
-- [Rust](https://www.rust-lang.org/) - Backend untuk pemrosesan gambar
-- [Vite](https://vitejs.dev/) - Build tool frontend
-- [image](https://crates.io/crates/image) - Pemrosesan gambar Rust
-- [kamadak-exif](https://crates.io/crates/kamadak-exif) - Ekstraksi metadata EXIF
-- [resvg](https://crates.io/crates/resvg) - Rendering SVG
-
-## Kontribusi
-
-Kontribusi sangat disambut! Silakan merasa bebas untuk mengajukan Pull Request.
+Lihat bagian [For developers](README.md#for-developers) di README bahasa Inggris.
 
 ## Lisensi
 
-Proyek ini dilisensikan di bawah Lisensi ISC - lihat file [LICENSE](https://github.com/gvoze32/digicamwm/blob/main/LICENSE) untuk detailnya.
+ISC. Lihat [LICENSE](LICENSE). Font yang dibundel (Inter, JetBrains Mono, DM Serif Display, DSEG) memakai SIL Open Font License; file lisensinya ada di `crates/core/fonts/`.

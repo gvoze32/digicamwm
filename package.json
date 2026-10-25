@@ -2,13 +2,18 @@
   "name": "digicamwm",
   "version": "1.0.8",
   "description": "Digital Camera Watermarking Tool",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "vite:dev": "vite dev",
-    "vite:build": "vite build",
+    "wasm": "node scripts/build-wasm.mjs",
+    "vite:dev": "vite",
+    "vite:build": "tsc --noEmit && vite build",
+    "web:dev": "npm run wasm && vite",
+    "web:build": "npm run wasm && npm run vite:build",
     "sync-version": "node scripts/sync-version.js",
     "tauri": "tauri",
-    "dev": "TAURI_DIR=. tauri dev",
-    "build": "TAURI_DIR=. tauri build"
+    "dev": "tauri dev",
+    "build": "tauri build"
   },
   "author": "gvoze32",
   "repository": {
@@ -17,12 +22,19 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@tauri-apps/api": "^2.10.1",
-    "@tauri-apps/plugin-dialog": "^2.6.0",
-    "@tauri-apps/plugin-opener": "^2.5.3"
+    "@tauri-apps/api": "~2.10.1",
+    "@tauri-apps/plugin-dialog": "~2.6.0",
+    "@tauri-apps/plugin-opener": "~2.5.3",
+    "fflate": "^0.8.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.10.0",
+    "@tauri-apps/cli": "~2.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "typescript": "^5.9.0",
     "vite": "^6.4.1"
   }
 }

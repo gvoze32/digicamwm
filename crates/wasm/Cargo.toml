@@ -1,0 +1,17 @@
+[package]
+name = "digicamwm-wasm"
+version = "0.1.0"
+description = "Browser bindings for digicamwm-core"
+license = "ISC"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+digicamwm-core = { path = "../core" }
+console_error_panic_hook = "0.1"
+serde-wasm-bindgen = "0.6"
+# Must match the wasm-bindgen CLI used by scripts/build-wasm.mjs.
+wasm-bindgen = "=0.2.127"

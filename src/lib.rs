@@ -1,8 +1,6 @@
 mod commands;
-mod designs;
-mod watermark;
 
-use commands::AppState;
+use std::sync::Arc;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -17,19 +15,14 @@ pub fn run() {
                         .build(),
                 )?;
             }
-            // Trigger update check on startup
-            let handle = app.handle().clone();
-            tauri::async_runtime::spawn(async move {
-                let _ = commands::check_for_updates(handle).await;
-            });
             Ok(())
         })
-        .manage(AppState::default())
+        .manage(Arc::new(commands::Batch::default()))
         .invoke_handler(tauri::generate_handler![
-            commands::get_designs,
-            commands::set_design,
-            commands::get_current_design,
-            commands::start_processing,
+            commands::list_images,
+            commands::read_image,
+            commands::process_folder,
+            commands::cancel_processing,
             commands::check_for_updates,
         ])
         .run(tauri::generate_context!())

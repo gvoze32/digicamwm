@@ -1,0 +1,22 @@
+[package]
+name = "digicamwm-core"
+version = "0.1.0"
+description = "Photo frame + EXIF watermark renderer shared by the DigiCamWM desktop app and web build"
+license = "ISC"
+edition = "2021"
+publish = false
+
+[features]
+default = []
+# Load OS fonts as glyph fallback (names outside the embedded Latin subset). Native only.
+system-fonts = ["resvg/system-fonts"]
+# Multithreaded HEIF tile decoding. Native only.
+parallel = ["heic-rs/parallel"]
+
+[dependencies]
+base64 = "0.22"
+heic-rs = { version = "0.1.4", default-features = false }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp", "tiff"] }
+kamadak-exif = "0.6"
+resvg = { version = "0.45", default-features = false, features = ["text", "raster-images"] }
+serde = { version = "1", features = ["derive"] }

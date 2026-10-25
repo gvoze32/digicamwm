@@ -3,5 +3,13 @@
   "identifier": "default",
   "description": "Default capabilities for the main window",
   "windows": ["main"],
-  "permissions": ["core:default", "dialog:allow-open", "opener:allow-open-url"]
+  "permissions": [
+    "core:default",
+    "dialog:allow-open",
+    "opener:allow-open-url",
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [{ "path": "**" }]
+    }
+  ]
 }

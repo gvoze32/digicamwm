@@ -6,15 +6,17 @@
   "build": {
     "frontendDist": "./dist",
     "devUrl": "http://localhost:1420",
-    "beforeDevCommand": "npm run sync-version && npm run vite:dev",
-    "beforeBuildCommand": "npm run sync-version && npm run vite:build"
+    "beforeDevCommand": "npm run sync-version && npm run wasm && npm run vite:dev",
+    "beforeBuildCommand": "npm run sync-version && npm run wasm && npm run vite:build"
   },
   "app": {
     "windows": [
       {
-        "title": "DigiCamWM - Photo Watermark Tool",
-        "width": 900,
-        "height": 700,
+        "title": "DigiCamWM",
+        "width": 1180,
+        "height": 800,
+        "minWidth": 720,
+        "minHeight": 560,
         "resizable": true,
         "fullscreen": false
       }
@@ -26,9 +28,6 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "resources": {
-      "assets/models/*": "assets/models/"
-    },
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
