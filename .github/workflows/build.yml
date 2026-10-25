@@ -133,11 +133,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Setup Android NDK
-        run: sdkmanager "ndk;27.0.12077973"
+      # The runner image already ships the Android SDK; setup-android@v3 fails trying to
+      # install the removed `tools` package, so only fetch the NDK.
+      - name: Install Android NDK
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;27.0.12077973" > /dev/null'
 
       - name: Install Node.js
         uses: actions/setup-node@v4
